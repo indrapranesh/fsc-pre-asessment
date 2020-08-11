@@ -1,0 +1,19 @@
+<div class="decision-tree-wrapper">
+    <div class="container pt-3">
+        <nz-card>
+            <div *ngFor="let decision of decisions; let i = index">
+                {{decision.questionText}}
+                <div class="d-flex pt-2">
+                    <div class="pl-1" *ngFor="let option of decision.options">
+                        <button nz-button nzType="primary" (click)="nextQuestion(decision, option, i)">{{option.optionText}}</button>
+                    </div>
+                </div>  
+            </div>
+        </nz-card>
+        <nz-result *ngIf="showResult" [nzIcon]="'smile-twotone'" [nzTitle]="resultText">
+            <div nz-result-extra>
+              <button nz-button nzType="primary" [nzLoading]="isLoadingFilter" (click)="submitResponse()">Next</button>
+            </div>
+          </nz-result>
+    </div>
+</div> 

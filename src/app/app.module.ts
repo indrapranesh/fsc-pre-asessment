@@ -6,21 +6,36 @@ import { AppComponent } from './app.component';
 import { DynamicsAuthService } from './services/dynamics-auth.service';
 import { DecisionTreeService } from './services/decision-tree.service';
 import { HttpClientModule } from '@angular/common/http';
-import { DescisionTreeComponent } from './components/descision-tree/descision-tree.component';
+import { DecisionTreeComponent } from './components/descision-tree/decision-tree.component';
+import { AntdesignModule } from './modules/antdesign/antdesign.module'; 
+import { SharedModule } from './modules/shared/shared.module';
+import { StepsFilterComponent } from './components/steps-filter/steps-filter.component';
+import * as AllIcons from '@ant-design/icons-angular/icons';
+import { NZ_ICONS } from 'ng-zorro-antd/icon';
+import { IconDefinition } from '@ant-design/icons-angular';
+
+const antDesignIcons = AllIcons as {
+  [key: string]: IconDefinition;
+};
+const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesignIcons[key]);
 
 @NgModule({
   declarations: [
     AppComponent,
-    DescisionTreeComponent
+    DecisionTreeComponent,
+    StepsFilterComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    AntdesignModule,
+    SharedModule
   ],
   providers: [
     DynamicsAuthService,
-    DecisionTreeService
+    DecisionTreeService,
+    { provide: NZ_ICONS, useValue: icons }
   ],
   bootstrap: [AppComponent]
 })

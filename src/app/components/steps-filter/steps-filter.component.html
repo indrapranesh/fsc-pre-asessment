@@ -1,0 +1,11 @@
+<div class="steps-wrapper">
+    <app-header></app-header>
+    <div class="container">
+        <nz-steps class="w-100" [nzCurrent]="current">
+            <nz-step nzTitle="Finished"></nz-step>
+            <nz-step nzTitle="In Progress"></nz-step>
+            <nz-step nzTitle="Waiting"></nz-step>
+        </nz-steps>
+        <app-decision-tree></app-decision-tree>
+    </div>
+</div>

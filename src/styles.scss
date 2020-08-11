@@ -1,1 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+
+body {
+    background: linear-gradient(to bottom,#fff,#f0f3f7);
+}

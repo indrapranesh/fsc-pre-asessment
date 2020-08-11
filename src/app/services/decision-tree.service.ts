@@ -49,6 +49,10 @@ export class DecisionTreeService {
         this.optionsMap.set(answer._new_fsc_question_value, questionOptions);
       }
     });
+  };
+
+  createOrganizationResponse(payload) {
+    return this.http.post(environment.DYNAMICS_API_URL+'/new_organization_answers',payload, {headers: this.headers, observe: 'response'});
   }
 
 }

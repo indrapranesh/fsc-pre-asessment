@@ -1,17 +1,19 @@
-export interface Decision {
+export interface CurrentDecision {
     questionText: string;
     questionId: string;
-    options: Options[];
+    options: CurrentOption[];
 }
 
-export interface Options {
+export interface CurrentOption {
     optionText: string;
     optionId: string;
     nextQuestionId: string;
     outcome?: string;
+    isSelected: boolean;
 }
 
 export interface FilterResponse {
     questionId: string;
-    optionId: string;
+    option: string;
+    outcome?: string;
 }

@@ -1,11 +1,12 @@
 <div class="decision-tree-wrapper">
     <div class="container pt-3">
-        <nz-card>
+        <nz-card class="spinner-body">
+            <!-- <nz-spin class="spinner" nzSimple></nz-spin> -->
             <div *ngFor="let decision of decisions; let i = index">
                 {{decision.questionText}}
                 <div class="d-flex pt-2">
                     <div class="pl-1" *ngFor="let option of decision.options">
-                        <button nz-button nzType="primary" (click)="nextQuestion(decision, option, i)">{{option.optionText}}</button>
+                        <button nz-button nzType="primary" [class.selected]="option.isSelected" (click)="nextQuestion(decision, option, i)">{{option.optionText}}</button>
                     </div>
                 </div>  
             </div>

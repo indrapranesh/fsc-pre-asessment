@@ -4,3 +4,12 @@
 body {
     background: linear-gradient(to bottom,#fff,#f0f3f7);
 }
+
+
+//common
+.spinner {
+    z-index: 3;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}

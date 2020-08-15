@@ -4,7 +4,7 @@
             <div class="filter-header pb-2">
                 Level {{filterLevel}}
             </div>
-            <!-- <nz-spin class="spinner" nzSimple></nz-spin> -->
+            <nz-spin class="spinner" *ngIf="isLoadingFilter" nzSimple></nz-spin>
             <div class="pb-5" *ngFor="let decision of decisions; let i = index">
                 {{decision.questionText}}
                 <div class="d-flex pt-2 flex-column">
@@ -15,8 +15,8 @@
             </div>
             <nz-result *ngIf="showResult" [nzStatus]="isEnd ? 'info' : 'success'" [nzTitle]="resultText">
                 <div nz-result-extra>
-                  <button nz-button nzType="primary" *ngIf="!isEnd" [nzLoading]="isLoadingFilter" (click)="submitResponse()">Next</button>
-                  <button nz-button nzType="primary" *ngIf="isEnd" [nzLoading]="isLoadingFilter" (click)="contact()">Contact</button>
+                  <button nz-button nzType="primary" *ngIf="!isEnd" [nzLoading]="isSubmitting" (click)="submitResponse()">Next</button>
+                  <button nz-button nzType="primary" *ngIf="isEnd" [nzLoading]="isSubmitting" (click)="contact()">Contact</button>
                 </div>
               </nz-result>
         </nz-card>

@@ -21,6 +21,7 @@ export class DecisionTreeComponent implements OnInit {
   orgResponse: FilterResponse[] = [];
   filterResults = {};
 
+  isSubmitting: boolean = false;
   isLoadingFilter: boolean = false;
   isEnd: boolean = false;
 
@@ -32,6 +33,7 @@ export class DecisionTreeComponent implements OnInit {
   }
 
   getDecisionTree(filter) {
+    this.isLoadingFilter = true;
     this.decisionTreeService.getQuestions(filter).subscribe((res: any) => {
       this.questions = res.value;
       this.questions.map((question) => {
@@ -60,8 +62,9 @@ export class DecisionTreeComponent implements OnInit {
             nextQuestionId: option._new_next_question_value,
             outcome: option.new_filter_outcome,
             isSelected: false
-          })
+          });
         });
+        this.isLoadingFilter = false;
       })
     });
   }
@@ -144,7 +147,7 @@ export class DecisionTreeComponent implements OnInit {
   // submitting response of single filter
   
   submitResponse() {
-    this.isLoadingFilter = true;
+    this.isSubmitting = true;
     this.nextFilter();
     /* submitting Organization Response to Dynamics */
     // let payloads = this.getOrgResponsePayload();
@@ -154,7 +157,7 @@ export class DecisionTreeComponent implements OnInit {
     //     (res) => {
     //       console.log(res);
     //       if((index+1) == payloads.length) {
-    //         this.isLoadingFilter = false;
+    //         this.isSubmitting = false;
     //         console.log('successfully udpated');
     //         this.nextFilter();
     //       }
@@ -182,7 +185,7 @@ export class DecisionTreeComponent implements OnInit {
 
   nextFilter() {
     this.showResult = false;
-    this.isLoadingFilter = false;
+    this.isSubmitting = false;
     this.clearVar();
     this.filterLevel += 1;
     if(this.filterLevel <= 3) {
@@ -191,6 +194,7 @@ export class DecisionTreeComponent implements OnInit {
     if(this.filterLevel > 3) {
       localStorage.setItem('result', JSON.stringify(this.filterResults));
       this.stepService.currentStep.next(1);
+      localStorage.setItem('currentStep', '1');
     }
   }
 

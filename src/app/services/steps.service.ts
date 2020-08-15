@@ -13,6 +13,14 @@ export class StepsService {
   }
 
   constructor() {
+   
+   if(localStorage.getItem('currentStep')) {
+    let step = localStorage.getItem('currentStep');
+    this.currentStep = new BehaviorSubject<number>(Number(step));
+   } else {
     this.currentStep = new BehaviorSubject<number>(0);
+    localStorage.setItem('currentStep', '0');
+   }
+    
   }
 }

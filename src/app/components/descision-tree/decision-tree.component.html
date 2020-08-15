@@ -1,20 +1,24 @@
-<div class="decision-tree-wrapper">
-    <div class="container pt-3">
+<div class="decision-tree-wrapper pt-3">
+    <div class="pt-3">
         <nz-card class="spinner-body">
+            <div class="filter-header pb-2">
+                Level {{filterLevel}}
+            </div>
             <!-- <nz-spin class="spinner" nzSimple></nz-spin> -->
-            <div *ngFor="let decision of decisions; let i = index">
+            <div class="pb-5" *ngFor="let decision of decisions; let i = index">
                 {{decision.questionText}}
-                <div class="d-flex pt-2">
-                    <div class="pl-1" *ngFor="let option of decision.options">
-                        <button nz-button nzType="primary" [class.selected]="option.isSelected" (click)="nextQuestion(decision, option, i)">{{option.optionText}}</button>
+                <div class="d-flex pt-2 flex-column">
+                    <div class="pt-1 options-wrapper" *ngFor="let option of decision.options">
+                        <div class="options-card" [class.unselected]="!option.isSelected" [class.selected]="option.isSelected" (click)="nextQuestion(decision, option, i)">{{option.optionText}}</div>
                     </div>
                 </div>  
             </div>
+            <nz-result *ngIf="showResult" [nzStatus]="isEnd ? 'info' : 'success'" [nzTitle]="resultText">
+                <div nz-result-extra>
+                  <button nz-button nzType="primary" *ngIf="!isEnd" [nzLoading]="isLoadingFilter" (click)="submitResponse()">Next</button>
+                  <button nz-button nzType="primary" *ngIf="isEnd" [nzLoading]="isLoadingFilter" (click)="contact()">Contact</button>
+                </div>
+              </nz-result>
         </nz-card>
-        <nz-result *ngIf="showResult" [nzIcon]="'smile-twotone'" [nzTitle]="resultText">
-            <div nz-result-extra>
-              <button nz-button nzType="primary" [nzLoading]="isLoadingFilter" (click)="submitResponse()">Next</button>
-            </div>
-          </nz-result>
     </div>
 </div> 

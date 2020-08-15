@@ -10,6 +10,7 @@ export interface CurrentOption {
     nextQuestionId: string;
     outcome?: string;
     isSelected: boolean;
+    endAccessment?: boolean;
 }
 
 export interface FilterResponse {

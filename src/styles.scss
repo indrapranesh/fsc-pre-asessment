@@ -1,9 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ng-zorro-antd/ng-zorro-antd.min.css";
 
-body {
-    background: linear-gradient(to bottom,#fff,#f0f3f7);
+//variables
+$primaryColor: #2e6745;
+$whiteColor: #fff;
+$hoverColor: rgba(40,92,77,0.8);
+
+//override ng-zoro
+.ant-btn-primary {
+    background-color: $primaryColor;
+    border-color: $primaryColor;
 }
+.ant-btn-primary:hover {
+    background-color: $hoverColor;
+    border-color: $primaryColor;
+}
+
+.ant-page-header-heading-left {
+    align-items: flex-end !important;
+}
+
 
 
 //common
@@ -12,4 +28,12 @@ body {
     position: absolute;
     left: 50%;
     top: 50%;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.flex-column {
+    flex-direction: column;
 }

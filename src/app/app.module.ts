@@ -13,6 +13,7 @@ import { StepsFilterComponent } from './components/steps-filter/steps-filter.com
 import * as AllIcons from '@ant-design/icons-angular/icons';
 import { NZ_ICONS } from 'ng-zorro-antd/icon';
 import { IconDefinition } from '@ant-design/icons-angular';
+import { MatrixComponent } from './components/matrix/matrix.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -23,7 +24,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
   declarations: [
     AppComponent,
     DecisionTreeComponent,
-    StepsFilterComponent
+    StepsFilterComponent,
+    MatrixComponent
   ],
   imports: [
     BrowserModule,

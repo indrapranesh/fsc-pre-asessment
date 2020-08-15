@@ -9,8 +9,6 @@ import { Question, Option} from '../interfaces/decision.interface';
 })
 export class DecisionTreeService {
 
-  questions:Array<Question>
-  answers: Array<Option>
   filter: Filter;
   headers;
   questionMap = new Map<String, Question>();
@@ -27,8 +25,8 @@ export class DecisionTreeService {
     return this.http.get(environment.DYNAMICS_API_URL+'/new_fsc_questionses?$select=new_fsc_question,new_is_root&$filter=new_filter_number eq %27'+filter+'%27', {headers: this.headers});
   } 
 
-  getOptions(filter) {
-    return this.http.get(environment.DYNAMICS_API_URL+'/new_fsc_answerses?$select=new_answer_value,_new_fsc_question_value,_new_next_question_value,new_filter_outcome&$filter=new_filter_number eq %27'+filter+'%27', {headers: this.headers});
+  getOptions() {
+    return this.http.get(environment.DYNAMICS_API_URL+'/new_fsc_answerses?$select=new_answer_value,_new_fsc_question_value,_new_next_question_value,new_filter_outcome,new_end_accessment', {headers: this.headers});
   }
 
   constructFilter(questions: Array<any>,answers: Array<any>) {
@@ -49,6 +47,7 @@ export class DecisionTreeService {
         this.optionsMap.set(answer._new_fsc_question_value, questionOptions);
       }
     });
+    console.log(this.optionsMap);
   };
 
   createOrganizationResponse(payload) {

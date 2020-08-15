@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { StepsService } from 'src/app/services/steps.service';
 
 @Component({
   selector: 'app-steps-filter',
@@ -7,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StepsFilterComponent implements OnInit {
 
-  filter = 1;
-  current = 0;
+  current: number;
 
-  constructor() { }
+  constructor(private stepService: StepsService) {
+    this.stepService.getCurrentStep().subscribe((value) => {
+      this.current = value;
+    })
+  }
 
   ngOnInit(): void {
   }

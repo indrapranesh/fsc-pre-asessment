@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DecisionTreeService } from 'src/app/services/decision-tree.service';
 import { CurrentDecision, FilterResponse, CurrentOption} from '../../interfaces/currentQuestion.interface';
 import { Option } from 'src/app/interfaces/decision.interface';
+import { StepsService } from '../../services/steps.service';
 
 @Component({
   selector: 'app-decision-tree',
@@ -18,11 +19,14 @@ export class DecisionTreeComponent implements OnInit {
   resultText: string = '';
   decisions: CurrentDecision[] = [];
   orgResponse: FilterResponse[] = [];
+  filterResults = {};
 
   isLoadingFilter: boolean = false;
+  isEnd: boolean = false;
 
   constructor(
-    private decisionTreeService: DecisionTreeService
+    private decisionTreeService: DecisionTreeService,
+    private stepService: StepsService
   ) {
     this.getDecisionTree(this.filterLevel);
   }
@@ -35,7 +39,7 @@ export class DecisionTreeComponent implements OnInit {
           this.rootQuestionId = question.new_fsc_questionsid;
         }
       })
-      this.decisionTreeService.getOptions(filter).subscribe((res:any) => {
+      this.decisionTreeService.getOptions().subscribe((res:any) => {
         this.answers = res.value;
         this.decisionTreeService.constructFilter(this.questions,this.answers);
         let rootQuestion: any = this.decisionTreeService.questionMap.get(this.rootQuestionId);
@@ -47,6 +51,8 @@ export class DecisionTreeComponent implements OnInit {
         this.decisions[0].questionText = rootQuestion.new_fsc_question;
         this.decisions[0].questionId = rootQuestion.new_fsc_questionsid;
         let options = this.decisionTreeService.optionsMap.get(this.rootQuestionId);
+        console.log(this.decisionTreeService.questionMap);
+        console.log(this.decisionTreeService.optionsMap);
         options.map((option) => {
           this.decisions[0].options.push({
             optionText: option.new_answer_value,
@@ -86,76 +92,84 @@ export class DecisionTreeComponent implements OnInit {
       this.decisionTreeService.optionsMap.forEach((value: Option[], key: string) => {
         if(option.nextQuestionId == key ) {
           let question = this.decisionTreeService.questionMap.get(key);
-          this.pushNextQuestion(key, value, question);
+          this.pushNextQuestion(key, value, question)
         } 
       });
     }
   }
 
   // push next question if there is one
-  pushNextQuestion(key, value, question) {
-    console.log('pushing next question')
+  pushNextQuestion(key, value:Array<any>, question) {
+    console.log('pushing next question',value);
     this.decisions.push({
       questionId: key,
       questionText: question.new_fsc_question,
-      options: [{
-        optionId: value[0].new_fsc_answersid,
-        optionText: value[0].new_answer_value,
-        nextQuestionId: value[0]._new_next_question_value,
-        outcome: value[0].new_filter_outcome,
-        isSelected: false
-      },
-      {
-        optionId: value[1].new_fsc_answersid,
-        optionText: value[1].new_answer_value,
-        nextQuestionId: value[1]._new_next_question_value,
-        outcome: value[1].new_filter_outcome,
-        isSelected: false
-      },
-    ]
+      options: []
     });
+    value.map((value) => {
+      this.decisions[this.decisions.length - 1].options.push(
+        {
+          optionId: value.new_fsc_answersid,
+          optionText: value.new_answer_value,
+          nextQuestionId: value._new_next_question_value,
+          outcome: value.new_filter_outcome,
+          isSelected: false,
+          endAccessment: value.new_end_accessment
+        }
+      )
+    })
   }
 
   //show result of current filter
   getResult(questionId, option) {
+    console.log(option);
     this.orgResponse.push({
       questionId: questionId,
       option: option.optionText,
       outcome: option.outcome
     });
-    console.log(this.orgResponse);
+    this.filterResults[this.filterLevel] = option.outcome;
+    console.log(this.filterResults);
+    if(option.endAccessment) {
+      this.isEnd = true;
+      console.log(this.isEnd);
+    } else {
+      this.isEnd = false;
+    }
     this.showResult = true;
     this.resultText = option.outcome;
   };
   
 
-  // submit response of single filter
+  // submitting response of single filter
   
   submitResponse() {
     this.isLoadingFilter = true;
-    let payloads = this.getOrgResponsePayload();
-    console.log(payloads);
-    payloads.forEach((payload, index) => {
-      this.decisionTreeService.createOrganizationResponse(payload).subscribe(
-        (res) => {
-          console.log(res);
-          if((index+1) == payloads.length) {
-            this.isLoadingFilter = false;
-            console.log('successfully udpated');
-            this.nextFilter();
-          }
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
-    });
+    this.nextFilter();
+    /* submitting Organization Response to Dynamics */
+    // let payloads = this.getOrgResponsePayload();
+    // console.log(payloads);
+    // payloads.forEach((payload, index) => {
+    //   this.decisionTreeService.createOrganizationResponse(payload).subscribe(
+    //     (res) => {
+    //       console.log(res);
+    //       if((index+1) == payloads.length) {
+    //         this.isLoadingFilter = false;
+    //         console.log('successfully udpated');
+    //         this.nextFilter();
+    //       }
+    //     },
+    //     (err) => {
+    //       console.log(err);
+    //     }
+    //   );
+    // });
   }
 
   getOrgResponsePayload() {
     let payload = [];
     this.orgResponse.map((res) => {
-      let questionId = 'accounts('+res.questionId+')'
+      let questionId = 'new_fsc_questionses('+res.questionId+')'
       payload.push({
         "new_org_answer": res.option,
         "new_fsc_question@odata.bind": questionId,
@@ -167,14 +181,25 @@ export class DecisionTreeComponent implements OnInit {
   }
 
   nextFilter() {
+    this.showResult = false;
+    this.isLoadingFilter = false;
+    this.clearVar();
+    this.filterLevel += 1;
+    if(this.filterLevel <= 3) {
+      this.getDecisionTree(this.filterLevel);
+    }
+    if(this.filterLevel > 3) {
+      localStorage.setItem('result', JSON.stringify(this.filterResults));
+      this.stepService.currentStep.next(1);
+    }
+  }
+
+  clearVar() {
     this.decisions = [];
     this.questions = [];
     this.answers = [];
-    this.filterLevel += 1;
-    if(this.filterLevel <= 3) {
-      console.log('nextFilter loading');
-      //this.getDecisionTree(this.filterLevel);
-    }
+    this.decisionTreeService.optionsMap.clear();
+    this.decisionTreeService.questionMap.clear();
   }
 
   ngOnInit(): void {

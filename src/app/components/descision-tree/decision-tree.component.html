@@ -1,10 +1,10 @@
-<div class="decision-tree-wrapper pt-3">
-    <div class="pt-3">
+<div class="decision-tree-wrapper pt-5">
+    <div class="card-wrapper">
         <nz-card class="spinner-body">
             <div class="filter-header pb-2">
                 Level {{filterLevel}}
             </div>
-            <nz-spin class="spinner" *ngIf="isLoadingFilter" nzSimple></nz-spin>
+            <nz-skeleton *ngIf="isLoadingFilter" [nzActive]="true"></nz-skeleton>
             <div class="pb-5" *ngFor="let decision of decisions; let i = index">
                 {{decision.questionText}}
                 <div class="d-flex pt-2 flex-column">
@@ -18,7 +18,7 @@
                   <button nz-button nzType="primary" *ngIf="!isEnd" [nzLoading]="isSubmitting" (click)="submitResponse()">Next</button>
                   <button nz-button nzType="primary" *ngIf="isEnd" [nzLoading]="isSubmitting" (click)="contact()">Contact</button>
                 </div>
-              </nz-result>
+            </nz-result>
         </nz-card>
     </div>
 </div> 

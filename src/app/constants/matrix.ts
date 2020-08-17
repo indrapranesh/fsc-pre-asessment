@@ -73,7 +73,7 @@ export const FilterOutcome = [
         code: 'TRwS'
     },
     {
-        outcome: 'Percentage/Credit System',
+        outcome: 'Percentage/Credit system',
         code: 'PC'
     },
     {

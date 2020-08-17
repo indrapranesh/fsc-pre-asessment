@@ -1,1 +1,10 @@
-<p>matrix works!</p>
+<div class="matrix-wrapper pt-5">
+    <nz-card>
+        <nz-result [nzStatus]="isLikely ? 'success' : 'info'" [nzTitle]="resultText">
+            <div nz-result-extra>
+              <button nz-button nzType="primary" *ngIf="isLikely"  (click)="submitResponse()">Next</button>
+              <button nz-button nzType="primary" *ngIf="!isLikely" (click)="contact()">Continue</button>
+            </div>
+        </nz-result>
+    </nz-card>
+</div>  

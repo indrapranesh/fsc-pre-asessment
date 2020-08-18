@@ -61,7 +61,8 @@ export class DecisionTreeComponent implements OnInit {
             optionId: option.new_fsc_answersid,
             nextQuestionId: option._new_next_question_value,
             outcome: option.new_filter_outcome,
-            isSelected: false
+            isSelected: false,
+            scenarioCode: option.new_scenario_code
           });
         });
         this.isLoadingFilter = false;
@@ -117,7 +118,8 @@ export class DecisionTreeComponent implements OnInit {
           nextQuestionId: value._new_next_question_value,
           outcome: value.new_filter_outcome,
           isSelected: false,
-          endAccessment: value.new_end_accessment
+          endAccessment: value.new_end_accessment,
+          scenarioCode: value.new_scenario_code
         }
       )
     })
@@ -131,7 +133,13 @@ export class DecisionTreeComponent implements OnInit {
       option: option.optionText,
       outcome: option.outcome
     });
-    this.filterResults[this.filterLevel] = option.outcome;
+    console.log(option);
+    this.filterResults[this.filterLevel] = {
+      outcome: option.outcome,
+      scenarioCode: option.scenarioCode,
+      outcomeCode: null,
+      filterLevel: this.filterLevel
+    };
     console.log(this.filterResults);
     if(option.endAccessment) {
       this.isEnd = true;

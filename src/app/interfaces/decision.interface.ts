@@ -10,4 +10,5 @@ export interface Option {
     _new_next_question_value: string;
     new_fsc_answersid: string;
     new_filter_outcome?: string;
+    new_scenario_code?: string;
 }

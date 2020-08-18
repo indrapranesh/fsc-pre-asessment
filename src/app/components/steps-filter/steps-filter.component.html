@@ -4,7 +4,7 @@
         <nz-steps class="w-100" nzSize="default" [nzCurrent]="current">
             <nz-step nzTitle="Self Identity"></nz-step>
             <nz-step nzTitle="Pre-assess eligibility"></nz-step>
-            <nz-step nzTitle="Fill Digital Checklist"></nz-step>
+            <nz-step nzTitle="Digital Checklist"></nz-step>
             <nz-step nzTitle="Add Additional Data"></nz-step>
             <!-- <nz-step nzTitle="Upload"></nz-step>
             <nz-step nzTitle="Download"></nz-step>
@@ -14,5 +14,6 @@
         </nz-steps>
         <app-decision-tree *ngIf="current == 0"></app-decision-tree>
         <app-matrix *ngIf="current == 1"></app-matrix>
+        <app-checklist *ngIf="current == 2"></app-checklist>
     </div>
 </div>

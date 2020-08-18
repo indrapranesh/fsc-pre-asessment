@@ -1,0 +1,75 @@
+<div class="checklist-wrapper">
+    <div class="container pt-5">
+        <nz-tabset>
+            <nz-tab [nzTitle]="results[1].outcome">
+                <nz-skeleton *ngIf="isChecklistLoading" [nzActive]="true"></nz-skeleton>
+                <nz-table *ngIf="!isChecklistLoading" #headerTable nzSize="middle" nzTableLayout="fixed" [nzScroll]="{ y: '650px' }">
+                    <thead>
+                      <tr>
+                        <th nzWidth="5%"></th>
+                        <th nzWidth=15%>Scenario Code</th>
+                        <th nzWidth="65%%">Standard</th>
+                        <th nzWidth="15%">Requirement Type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let standard of standardsFilter1;let i = index;">
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{ standard?.scenarioCode }}</td>
+                          <td>{{ standard?.standardContent }}</td>
+                          <td>{{ standard?.requirementType }}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </nz-table>
+            </nz-tab>
+            <nz-tab [nzTitle]="results[2].outcome">
+                <nz-skeleton *ngIf="isChecklistLoading" [nzActive]="true"></nz-skeleton>
+                <nz-table *ngIf="!isChecklistLoading" #headerTable nzSize="middle" nzTableLayout="fixed" [nzScroll]="{ y: '650px' }">
+                    <thead>
+                      <tr>
+                        <th nzWidth="5%"></th>
+                        <th nzWidth=15%>Scenario Code</th>
+                        <th nzWidth="65%%">Standard</th>
+                        <th nzWidth="15%">Requirement Type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let standard of standardsFilter2;let i = index;">
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{ standard?.scenarioCode }}</td>
+                          <td>{{ standard?.standardContent }}</td>
+                          <td>{{ standard?.requirementType }}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </nz-table>
+            </nz-tab>
+            <nz-tab [nzTitle]="results[3].outcome">
+                <nz-skeleton *ngIf="isChecklistLoading" [nzActive]="true"></nz-skeleton>
+                <nz-table *ngIf="!isChecklistLoading" #headerTable nzSize="middle" nzTableLayout="fixed" [nzScroll]="{ y: '650px' }">
+                    <thead>
+                      <tr>
+                        <th nzWidth="5%"></th>
+                        <th nzWidth=15%>Scenario Code</th>
+                        <th nzWidth="65%%">Standard</th>
+                        <th nzWidth="15%">Requirement Type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container *ngFor="let standard of standardsFilter3;let i = index;">
+                        <tr>
+                          <td>{{i+1}}</td>
+                          <td>{{ standard?.scenarioCode }}</td>
+                          <td>{{ standard?.standardContent }}</td>
+                          <td>{{ standard?.requirementType }}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </nz-table>
+            </nz-tab>
+        </nz-tabset>
+    </div>
+</div>

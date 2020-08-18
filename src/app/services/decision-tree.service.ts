@@ -26,7 +26,7 @@ export class DecisionTreeService {
   } 
 
   getOptions() {
-    return this.http.get(environment.DYNAMICS_API_URL+'/new_fsc_answerses?$select=new_answer_value,_new_fsc_question_value,_new_next_question_value,new_filter_outcome,new_end_accessment', {headers: this.headers});
+    return this.http.get(environment.DYNAMICS_API_URL+'/new_fsc_answerses?$select=new_answer_value,_new_fsc_question_value,_new_next_question_value,new_filter_outcome,new_end_accessment,new_scenario_code', {headers: this.headers});
   }
 
   constructFilter(questions: Array<any>,answers: Array<any>) {

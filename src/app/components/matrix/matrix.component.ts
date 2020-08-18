@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { matrix, FilterOutcome } from '../../constants/matrix';
+import { StepsService } from 'src/app/services/steps.service';
 
 @Component({
   selector: 'app-matrix',
@@ -12,7 +13,9 @@ export class MatrixComponent implements OnInit {
   isLikely: boolean;
   resultText: string;
 
-  constructor() { 
+  constructor(
+    private stepService: StepsService
+  ) { 
     this.getLikelihood();
   }
 
@@ -21,17 +24,17 @@ export class MatrixComponent implements OnInit {
   getLikelihood() {
     let _result = this.getFilterCodes();
     console.log(_result);
-    let primaryCode = _result[1];
+    let primaryCode = _result[1].outcomeCode;
     matrix.map((primaryFilter) => {
       if(primaryCode == primaryFilter.filter1) {
         primaryFilter.Likely.map((x) => {
-          if(x.filter2 == _result[2] && x.filter3 == _result[3]) {
+          if(x.filter2 == _result[2].outcomeCode && x.filter3 == _result[3].outcomeCode) {
             this.isLikely = true;
             this.resultText = 'Great, You are likely eligible for remote audit'
           }
         });
         primaryFilter.NotLikely.map((x) => {
-          if(x.filter2 == _result[2] && x.filter3 == _result[3]) {
+          if(x.filter2 == _result[2].outcomeCode && x.filter3 == _result[3].outcomeCode) {
             this.isLikely = false;
             this.resultText = 'Oops, You are not likely eligible for remote audit'
           }
@@ -46,17 +49,22 @@ export class MatrixComponent implements OnInit {
   getFilterCodes() {
     let result = JSON.parse(localStorage.getItem('result')); 
     FilterOutcome.map((filter) => {
-      if(result[1] == filter.outcome) {
-        result[1] = filter.code
+      if(result[1].outcome == filter.outcome) {
+        result[1].outcomeCode = filter.code
       };
-      if(result[2] == filter.outcome) {
-        result[2] = filter.code
+      if(result[2].outcome == filter.outcome) {
+        result[2].outcomeCode = filter.code
       };
-      if(result[3] == filter.outcome) {
-        result[3] = filter.code
+      if(result[3].outcome == filter.outcome) {
+        result[3].outcomeCode = filter.code
       };
     });
     return result;
+  }
+
+  next() {
+    this.stepService.currentStep.next(2);
+    localStorage.setItem('currentStep', '2');
   }
 
   ngOnInit(): void {

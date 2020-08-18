@@ -11,6 +11,7 @@ export interface CurrentOption {
     outcome?: string;
     isSelected: boolean;
     endAccessment?: boolean;
+    scenarioCode?: string;
 }
 
 export interface FilterResponse {

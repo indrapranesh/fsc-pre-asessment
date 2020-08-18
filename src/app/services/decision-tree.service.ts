@@ -18,7 +18,7 @@ export class DecisionTreeService {
     let access_token = localStorage.getItem('ACCESS_TOKEN')
     this.headers = new HttpHeaders({
         'Authorization': `Bearer ${access_token}`
-    })
+    });
   }
 
   getQuestions(filter) {

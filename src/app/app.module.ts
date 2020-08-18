@@ -15,6 +15,7 @@ import { NZ_ICONS } from 'ng-zorro-antd/icon';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { MatrixComponent } from './components/matrix/matrix.component';
 import { ChecklistComponent } from './components/checklist/checklist.component';
+import { AdditionalQuestionsComponent } from './components/additional-questions/additional-questions.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -27,7 +28,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     DecisionTreeComponent,
     StepsFilterComponent,
     MatrixComponent,
-    ChecklistComponent
+    ChecklistComponent,
+    AdditionalQuestionsComponent
   ],
   imports: [
     BrowserModule,

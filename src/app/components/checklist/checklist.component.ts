@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChecklistService } from "../../services/checklist.service";
 import { Scenario } from "../../interfaces/checklist.interface";
+import { StepsService } from 'src/app/services/steps.service';
 
 @Component({
   selector: 'app-checklist',
@@ -26,7 +27,8 @@ export class ChecklistComponent implements OnInit {
   isChecklistLoading: boolean;
  
   constructor(
-    private checkListService: ChecklistService
+    private checkListService: ChecklistService,
+    private stepService: StepsService
   ) {
     this.isChecklistLoading = true;
     this.getResultArray();
@@ -40,6 +42,8 @@ export class ChecklistComponent implements OnInit {
     this.outcomes.push(this.results[3]);
     console.log('results',typeof(this.results));
   }
+
+  // Load Default Values from the tables Filter Levels, Requirement Types, Standards
 
   loadData() {
     this.checkListService.getFilterLevels().subscribe((res: any) => {
@@ -55,6 +59,8 @@ export class ChecklistComponent implements OnInit {
       this.getRequirements();
     });
   }
+
+  //Get Requirements based on the scenario code 
 
   getRequirements() {
     this.checkListService.getCocScenarios().subscribe((res: any)=> {
@@ -82,6 +88,8 @@ export class ChecklistComponent implements OnInit {
     })
   };
 
+  // Process the Requirements mapping Requirement Type, Standards and Scenarios Tables
+
   processRequirements() {
     this._requirements.map((requirement) => {
       this.requirementTypes.map((type) => {
@@ -105,6 +113,8 @@ export class ChecklistComponent implements OnInit {
     this.divideRequirements()
   }
 
+  // Divide requirements based on the three filter outcomes
+
   divideRequirements() {
     this._requirements.map((requirement) => {
       if(requirement.filterLevel == 1) {
@@ -121,6 +131,13 @@ export class ChecklistComponent implements OnInit {
     console.log(this.standardsFilter1);
     console.log(this.standardsFilter2);
     console.log(this.standardsFilter3);
+  }
+
+  // Go to next Step
+
+  next() {
+    this.stepService.currentStep.next(3);
+    localStorage.setItem('currentStep', '3');
   }
 
   ngOnInit(): void {

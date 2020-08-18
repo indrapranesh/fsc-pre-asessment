@@ -1,5 +1,6 @@
 <div class="checklist-wrapper">
     <div class="container pt-5">
+      <button nz-button nzType="primary" (click)="next()">Continue</button>
         <nz-tabset>
             <nz-tab [nzTitle]="results[1].outcome">
                 <nz-skeleton *ngIf="isChecklistLoading" [nzActive]="true"></nz-skeleton>

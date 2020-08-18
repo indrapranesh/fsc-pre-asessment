@@ -12,10 +12,12 @@ export interface CurrentOption {
     isSelected: boolean;
     endAccessment?: boolean;
     scenarioCode?: string;
+    riskLevel?: string;
 }
 
 export interface FilterResponse {
     questionId: string;
     option: string;
     outcome?: string;
+    riskLevel?: string;
 }

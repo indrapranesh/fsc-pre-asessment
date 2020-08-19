@@ -9,10 +9,16 @@ import { StepsService } from 'src/app/services/steps.service';
 export class StepsFilterComponent implements OnInit {
 
   current: number;
+  firstSegment: boolean;
 
   constructor(private stepService: StepsService) {
     this.stepService.getCurrentStep().subscribe((value) => {
       this.current = value;
+      if(this.current <= 3) {
+        this.firstSegment = true;
+      } else {
+        this.firstSegment = false;
+      }
     })
   }
 

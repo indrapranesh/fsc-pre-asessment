@@ -16,6 +16,7 @@ import { IconDefinition } from '@ant-design/icons-angular';
 import { MatrixComponent } from './components/matrix/matrix.component';
 import { ChecklistComponent } from './components/checklist/checklist.component';
 import { AdditionalQuestionsComponent } from './components/additional-questions/additional-questions.component';
+import { DownloadComponent } from './components/download/download.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -29,7 +30,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     StepsFilterComponent,
     MatrixComponent,
     ChecklistComponent,
-    AdditionalQuestionsComponent
+    AdditionalQuestionsComponent,
+    DownloadComponent
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdditionalQuestionsService } from '../../services/additional-questions.service';
 import { CurrentDecision, FilterResponse, CurrentOption} from '../../interfaces/currentQuestion.interface';
 import { AdditionalOption } from 'src/app/interfaces/additionalQuestion.interface';
+import { StepsService } from 'src/app/services/steps.service';
  
 @Component({
   selector: 'app-additional-questions',
@@ -23,7 +24,8 @@ export class AdditionalQuestionsComponent implements OnInit {
   isEnd: boolean = false;
 
   constructor(
-    private additionalService: AdditionalQuestionsService
+    private additionalService: AdditionalQuestionsService,
+    private stepService: StepsService
   ) { 
     this.getDecisionTree();
   }
@@ -139,6 +141,12 @@ export class AdditionalQuestionsComponent implements OnInit {
     this.showResult = true;
     this.resultText = option.riskLevel;
   };
+
+
+  submitResponse() {
+    this.stepService.currentStep.next(4);
+    localStorage.setItem('currentStep', '4');
+  }
 
   ngOnInit(): void {
   }

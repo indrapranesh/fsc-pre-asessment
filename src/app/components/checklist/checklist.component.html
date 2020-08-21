@@ -2,47 +2,63 @@
     <div class="container pt-5">
       <button nz-button nzType="primary" (click)="next()">Continue</button>
         <nz-tabset>
-            <nz-tab [nzTitle]="results[1].outcome">
+            <nz-tab nzTitle="Requirements">
                 <nz-skeleton *ngIf="isChecklistLoading" [nzActive]="true"></nz-skeleton>
                 <nz-table *ngIf="!isChecklistLoading" #headerTable nzSize="middle" nzTableLayout="fixed" [nzScroll]="{ y: '650px' }">
                     <thead>
                       <tr>
                         <th nzWidth="5%"></th>
-                        <th nzWidth=15%>Scenario Code</th>
-                        <th nzWidth="65%%">Standard</th>
+                        <th nzWidth="65%">Requirement</th>
                         <th nzWidth="15%">Requirement Type</th>
+                        <th nzWidth="5%"></th>
                       </tr>
                     </thead>
                     <tbody>
-                      <ng-container *ngFor="let standard of standardsFilter1;let i = index;">
+                      <ng-container *ngFor="let standard of _requirements;let i = index;">
                         <tr>
                           <td>{{i+1}}</td>
-                          <td>{{ standard?.scenarioCode }}</td>
                           <td>{{ standard?.standardContent }}</td>
                           <td>{{ standard?.requirementType }}</td>
+                          <td nzWidth="5%" [nzExpand]="expandSet.has(standard.fsc_requirment_type_per_coc_scenario_stdid)" (nzExpandChange)="onExpandChange(standard.fsc_requirment_type_per_coc_scenario_stdid, $event)"></td>
+                        </tr>
+                        <tr [nzExpand]="expandSet.has(standard.fsc_requirment_type_per_coc_scenario_stdid)">
+                          <p *ngIf="standard.cocInput">{{standard?.cocInput}}</p>
+                          <form *ngIf="!standard.cocInput" nz-form [formGroup]="inputForm">
+                            <nz-form-item>
+                              <nz-form-control>
+                                <nz-input-group nzPrefixIcon="user">
+                                  <textarea formControlName="input" nz-input placeholder="Give your inputs"></textarea>
+                                </nz-input-group>
+                              </nz-form-control>
+                            </nz-form-item >
+                            <button nz-button nzType="primary" (click)="submitInput(standard)">Add input</button>
+                          </form>
                         </tr>
                       </ng-container>
                     </tbody>
                   </nz-table>
             </nz-tab>
-            <nz-tab [nzTitle]="results[2].outcome">
+            <!-- <nz-tab [nzTitle]="results[2].outcome">
                 <nz-skeleton *ngIf="isChecklistLoading" [nzActive]="true"></nz-skeleton>
                 <nz-table *ngIf="!isChecklistLoading" #headerTable nzSize="middle" nzTableLayout="fixed" [nzScroll]="{ y: '650px' }">
                     <thead>
                       <tr>
                         <th nzWidth="5%"></th>
-                        <th nzWidth=15%>Scenario Code</th>
-                        <th nzWidth="65%%">Standard</th>
+                        <th nzWidth="55%">Standard</th>
                         <th nzWidth="15%">Requirement Type</th>
+                        <th nzWidth="5%"></th>
                       </tr>
                     </thead>
                     <tbody>
                       <ng-container *ngFor="let standard of standardsFilter2;let i = index;">
                         <tr>
                           <td>{{i+1}}</td>
-                          <td>{{ standard?.scenarioCode }}</td>
                           <td>{{ standard?.standardContent }}</td>
                           <td>{{ standard?.requirementType }}</td>
+                          <td nzWidth="5%" [nzExpand]="expandSet.has(standard.fsc_requirment_type_per_coc_scenario_stdid)" (nzExpandChange)="onExpandChange(standard.fsc_requirment_type_per_coc_scenario_stdid, $event)"></td>
+                        </tr>
+                        <tr [nzExpand]="expandSet.has(standard.fsc_requirment_type_per_coc_scenario_stdid)">
+                          <button nz-button nzType="primary" [nzSize]="small">Add Input</button>
                         </tr>
                       </ng-container>
                     </tbody>
@@ -54,23 +70,26 @@
                     <thead>
                       <tr>
                         <th nzWidth="5%"></th>
-                        <th nzWidth=15%>Scenario Code</th>
-                        <th nzWidth="65%%">Standard</th>
+                        <th nzWidth="55%">Standard</th>
                         <th nzWidth="15%">Requirement Type</th>
+                        <th nzWidth="5%"></th>
                       </tr>
                     </thead>
                     <tbody>
                       <ng-container *ngFor="let standard of standardsFilter3;let i = index;">
                         <tr>
                           <td>{{i+1}}</td>
-                          <td>{{ standard?.scenarioCode }}</td>
                           <td>{{ standard?.standardContent }}</td>
                           <td>{{ standard?.requirementType }}</td>
+                          <td nzWidth="5%" [nzExpand]="expandSet.has(standard.fsc_requirment_type_per_coc_scenario_stdid)" (nzExpandChange)="onExpandChange(standard.fsc_requirment_type_per_coc_scenario_stdid, $event)"></td>
+                        </tr>
+                        <tr [nzExpand]="expandSet.has(standard.fsc_requirment_type_per_coc_scenario_stdid)">
+                          <button nz-button nzType="primary" [nzSize]="small">Add Input</button>
                         </tr>
                       </ng-container>
                     </tbody>
                   </nz-table>
-            </nz-tab>
+            </nz-tab> -->
         </nz-tabset>
     </div>
 </div>

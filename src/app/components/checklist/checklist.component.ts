@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ChecklistService } from "../../services/checklist.service";
 import { Scenario } from "../../interfaces/checklist.interface";
 import { StepsService } from 'src/app/services/steps.service';
+import { resolve } from 'dns';
+import { forkJoin } from 'rxjs';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-checklist',
@@ -15,24 +20,37 @@ export class ChecklistComponent implements OnInit {
   outcomes = [];
   requirementTypes = [];
   standards = [];
-  _requirements = [];
-  requirements = [];
+  _requirements: Array<any> = [];
   filterLevels = [];
-
+  headers;
 
   standardsFilter1 = [];
   standardsFilter2 = [];
   standardsFilter3 = [];
+  expandSet = new Set<number>();
 
   isChecklistLoading: boolean;
+
+  inputForm = this.formBuilder.group({
+    input: []
+  });
  
   constructor(
     private checkListService: ChecklistService,
-    private stepService: StepsService
+    private stepService: StepsService,
+    private http: HttpClient,
+    private formBuilder: FormBuilder
   ) {
-    this.isChecklistLoading = true;
+    let access_token = localStorage.getItem('ACCESS_TOKEN')
+    this.headers = new HttpHeaders({
+        'Authorization': `Bearer ${access_token}`
+    });
     this.getResultArray();
-    this.loadData();
+    if(localStorage.getItem('requirements')) {
+      this._requirements = JSON.parse(localStorage.getItem('requirements'));
+    } else {
+      this.loadData();
+    }
   }
 
   getResultArray() {
@@ -46,6 +64,7 @@ export class ChecklistComponent implements OnInit {
   // Load Default Values from the tables Filter Levels, Requirement Types, Standards
 
   loadData() {
+    this.isChecklistLoading = true;
     this.checkListService.getFilterLevels().subscribe((res: any) => {
       this.filterLevels = res.value;
     });
@@ -73,16 +92,22 @@ export class ChecklistComponent implements OnInit {
           }
         })
       });
-      this.scenarios.map((scenario) => [
+      this.scenarios.map((scenario) => {
         this.filterLevels.map((filterLevel) => {
           if(scenario._fsc_filter_code_value == filterLevel.fsc_coc_scenarios_filterid) {
             scenario.filterLevel = filterLevel.fsc_filter_code;
           }
         })
-      ])
-      console.log(this.outcomes);
+      });
       this.checkListService.getRequirementPerScenario(this.outcomes).subscribe((res:any) => {
         this._requirements = res.value;
+        let requirements = this._requirements.filter((obj, index, self) => {
+          return index === self.findIndex((t) => {
+            return t['_fsc_std_element_id_value'] === obj['_fsc_std_element_id_value'];
+          })
+        })
+        this._requirements = [];
+        this._requirements = requirements;
         this.processRequirements();
       });
     })
@@ -90,11 +115,12 @@ export class ChecklistComponent implements OnInit {
 
   // Process the Requirements mapping Requirement Type, Standards and Scenarios Tables
 
-  processRequirements() {
+  async processRequirements() {
     this._requirements.map((requirement) => {
       this.requirementTypes.map((type) => {
         if(type.fsc_requirementtypeid == requirement._fsc_requirement_code_value) {
           requirement['requirementType'] = type.fsc_requirement_comments;
+          requirement['expanded'] = false;
         }
       });
       this.standards.map((standard) => {
@@ -107,34 +133,41 @@ export class ChecklistComponent implements OnInit {
           requirement['scenarioCode'] = scenario.fsc_scenario_code;
           requirement['filterLevel'] = scenario.filterLevel;
         }
-      })
+      });
     });
-    console.log(this._requirements);
-    this.divideRequirements()
+    localStorage.setItem('requirements', JSON.stringify(this._requirements));
+    this.isChecklistLoading = false;
   }
 
-  // Divide requirements based on the three filter outcomes
+  //expand row 
+  onExpandChange(id: number, checked: boolean): void {
+    console.log('expanding');
+    if (checked) {
+      this.expandSet.add(id);
+    } else {
+      this.expandSet.delete(id);
+    }
+  }
 
-  divideRequirements() {
-    this._requirements.map((requirement) => {
-      if(requirement.filterLevel == 1) {
-        this.standardsFilter1.push(requirement);
-      }
-      if(requirement.filterLevel == 2) {
-        this.standardsFilter2.push(requirement);
-      }
-      if(requirement.filterLevel == 3) {
-        this.standardsFilter3.push(requirement);
-      }
+  submitInput(requirement) {
+    console.log(requirement);
+    console.log(this.inputForm.value.input);
+    let payload  = {
+      'new_fsc_requirment_type_per_coc_scenario@odata.bind': '/fsc_requirment_type_per_coc_scenario_stds('+requirement.fsc_requirment_type_per_coc_scenario_stdid + ')',
+      'new_coc_input': this.inputForm.value.input,
+      "new_fsc_organization@odata.bind": "accounts(58cf986f-fccc-ea11-a815-000d3a0a82c9)"
+    }
+    this.checkListService.createOrgRequirement(payload).subscribe((res)=> {
+      this._requirements.map((req) => {
+        if(req._fsc_std_element_id_value == requirement._fsc_std_element_id_value) {
+          req['cocInput'] = this.inputForm.value.input;
+        }
+        localStorage.setItem('requirements', JSON.stringify(this._requirements));
+      });
     });
-    this.isChecklistLoading = false;
-    console.log(this.standardsFilter1);
-    console.log(this.standardsFilter2);
-    console.log(this.standardsFilter3);
   }
 
   // Go to next Step
-
   next() {
     this.stepService.currentStep.next(3);
     localStorage.setItem('currentStep', '3');

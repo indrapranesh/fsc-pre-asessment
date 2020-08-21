@@ -1,0 +1,38 @@
+<div class="upload-wrapper">
+    <nz-card>
+        <div class="upload-content">
+            <form nz-form [formGroup]="uploadForm" (ngSubmit)="upload()">
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="5" nzRequired nzFor="note">Choose Requirement</nz-form-label>
+                    <nz-form-control [nzSpan]="12" nzErrorTip="Please choose a requirement">
+                        <textarea
+                            formControlName="requirement"
+                            placeholder="input here"
+                            nz-input
+                            row="4"
+                            [(ngModel)]="selectedRequirement"
+                            (input)="onInput($event)"
+                            [nzAutocomplete]="auto"
+                        ></textarea>
+                        <nz-autocomplete #auto>
+                            <ng-container *ngFor="let requirement of requirements">
+                                <nz-auto-option [nzLabel]="requirement.standardContent" [nzValue]="requirement">{{ requirement.standardContent }}</nz-auto-option>
+                            </ng-container>
+                        </nz-autocomplete>
+                    </nz-form-control>
+                  </nz-form-item>
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="5" nzRequired nzFor="note">Select a File</nz-form-label>
+                    <nz-form-control [nzSpan]="12" nzErrorTip="Please Select a File">
+                        <input type="file" (change)="fileChanged($event);" formControlName="file">
+                    </nz-form-control>
+                  </nz-form-item>
+                  <nz-form-item>
+                    <nz-form-control [nzSpan]="12" [nzOffset]="5">
+                      <button nz-button nzType="primary" [disabled]="!this.uploadForm.valid">Submit</button>
+                    </nz-form-control>
+                  </nz-form-item>
+            </form>
+        </div>
+    </nz-card>
+</div>

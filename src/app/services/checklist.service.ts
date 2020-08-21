@@ -41,4 +41,12 @@ export class ChecklistService {
     return this.http.get(environment.DYNAMICS_API_URL+'/fsc_standards_elementses?$select=fsc_element_content,fsc_display_order,fsc_element_reference,fsc_is_requirement',{headers: this.headers});
   }
 
+  getOrgRequirements(orgId) {
+    return this.http.get(environment.DYNAMICS_API_URL+'/new_organization_requirements?$filter=_new_fsc_organization_value eq %27'+orgId+'%27',{headers: this.headers});
+  }
+
+  createOrgRequirement(payload) {
+    return this.http.post(environment.DYNAMICS_API_URL+'/new_organization_requirements',payload, {headers: this.headers});
+  }
+
 }

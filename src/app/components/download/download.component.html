@@ -1,1 +1,23 @@
-<p>download works!</p>
+<div class="download-wrapper">
+    <nz-card>
+      <button nz-button nzType="primary" class="mb-1 mt-1" (click)="next()">Continue</button>
+        <div class="card-content-wrapper">
+            <nz-table #basicTable>
+                <thead>
+                  <tr>
+                    <th>Document</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of resources">
+                    <td>{{data.new_resource_name}}</td>
+                    <td>
+                        <i nz-icon nzType="download" class="cursor-pointer" style="font-size: 20px;" (click)="downloadFile(data)" nzTheme="outline"></i>
+                    </td>
+                  </tr>
+                </tbody>
+              </nz-table>
+        </div>
+    </nz-card>
+</div>

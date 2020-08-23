@@ -10,13 +10,24 @@ export class DynamicsAuthService {
   constructor(private http: HttpClient) { }
 
   authenticate() {
-    this.http.get(environment.BACKEND_URL).subscribe((res: any) => {
+    return this.http.get(environment.BACKEND_URL).subscribe((res: any) => {
       if(res.access_token) {
         localStorage.setItem('ACCESS_TOKEN', res.access_token);
         localStorage.setItem('REFRESH_TOKEN', res.refresh_token);
-      } else {
-        console.log('Something went wrong');
       }
     });
+  }
+
+  refresh() {
+    let refreshToken = localStorage.getItem('REFRESH_TOKEN');
+    let params = {
+      refresh_token: refreshToken
+    }
+    return this.http.post(environment.BACKEND_URL+'/refresh',params).subscribe((res: any) => {
+      if(res.access_token) {
+        localStorage.setItem('ACCESS_TOKEN', res.access_token);
+        localStorage.setItem('REFRESH_TOKEN', res.refresh_token);
+      }
+    })
   }
 }

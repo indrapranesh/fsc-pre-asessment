@@ -9,7 +9,7 @@ export class InitService {
   headers;
   orgId = '5acf986f-fccc-ea11-a815-000d3a0a82c9';
   legalRepId = 860140004;
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
     let access_token = localStorage.getItem('ACCESS_TOKEN');
     this.headers = new HttpHeaders ({
       'Authorization': `Bearer ${access_token}`,

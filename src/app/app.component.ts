@@ -11,6 +11,8 @@ export class AppComponent {
   title = 'fsc-pre-asessment';
 
   constructor(private authService: DynamicsAuthService) {
-    this.authService.authenticate();
+    if(!localStorage.getItem('ACCESS_TOKEN')) {
+      this.authService.authenticate();
+    }
   }
 }

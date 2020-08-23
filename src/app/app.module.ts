@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DynamicsAuthService } from './services/dynamics-auth.service';
 import { DecisionTreeService } from './services/decision-tree.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DecisionTreeComponent } from './components/descision-tree/decision-tree.component';
 import { AntdesignModule } from './modules/antdesign/antdesign.module'; 
 import { SharedModule } from './modules/shared/shared.module';
@@ -22,6 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommunicateComponent } from './components/communicate/communicate.component';
 import { LocationComponent } from './components/location/location.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -54,7 +55,12 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
   providers: [
     DynamicsAuthService,
     DecisionTreeService,
-    { provide: NZ_ICONS, useValue: icons }
+    { provide: NZ_ICONS, useValue: icons },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+  }
   ],
   bootstrap: [AppComponent]
 })

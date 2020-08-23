@@ -1,0 +1,58 @@
+<div class="location-wrapper">
+    <nz-card>
+        <div class="form-wrapper">
+            <form nz-form [nzLayout]="'inline'" [formGroup]="addressForm" (ngSubmit)="submit()">
+                <nz-form-item>
+                  <nz-form-control nzErrorTip="Enter Address!">
+                    <nz-input-group>
+                      <input formControlName="addressLine1" nz-input placeholder="Address Line 1" />
+                    </nz-input-group>
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-control >
+                    <nz-input-group>
+                        <input formControlName="addressLine2" nz-input placeholder="Address Line 2" />
+                      </nz-input-group>
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Enter City!">
+                        <nz-input-group>
+                        <input formControlName="city" nz-input placeholder="City" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Enter State!">
+                        <nz-input-group>
+                        <input formControlName="state" nz-input placeholder="State" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Enter Postal Code!">
+                        <nz-input-group>
+                        <input formControlName="zipcode" nz-input placeholder="Postal Code" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Enter Country!">
+                        <nz-input-group>
+                        <input formControlName="country" nz-input placeholder="Country" />
+                        </nz-input-group>
+                    </nz-form-control>
+                    </nz-form-item>
+                <nz-form-item>
+                  <nz-form-control>
+                    <button nz-button nzType="primary" [disabled]="!addressForm.valid">Finish</button>
+                  </nz-form-control>
+                </nz-form-item>
+              </form>
+        </div>
+        <div class="map-wrapper">
+            <div #mapViewNode id="mapViewNode"></div>
+        </div>
+    </nz-card>
+</div>

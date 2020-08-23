@@ -20,6 +20,8 @@ import { DownloadComponent } from './components/download/download.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommunicateComponent } from './components/communicate/communicate.component';
+import { LocationComponent } from './components/location/location.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -35,7 +37,9 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     ChecklistComponent,
     AdditionalQuestionsComponent,
     DownloadComponent,
-    UploadComponent
+    UploadComponent,
+    CommunicateComponent,
+    LocationComponent
   ],
   imports: [
     BrowserModule,

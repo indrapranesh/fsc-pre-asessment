@@ -5,7 +5,7 @@ import { StepsFilterComponent } from './components/steps-filter/steps-filter.com
 
 const routes: Routes = [
   {
-    path: 'self-identity',
+    path: '',
     component: StepsFilterComponent
   }
 ];

@@ -3,6 +3,8 @@ import { DecisionTreeService } from 'src/app/services/decision-tree.service';
 import { CurrentDecision, FilterResponse, CurrentOption} from '../../interfaces/currentQuestion.interface';
 import { Option } from 'src/app/interfaces/decision.interface';
 import { StepsService } from '../../services/steps.service';
+import { InitService } from '../../services/init.service';
+import { Organization} from '../../interfaces/organization.interface';
 
 @Component({
   selector: 'app-decision-tree',
@@ -24,12 +26,25 @@ export class DecisionTreeComponent implements OnInit {
   isSubmitting: boolean = false;
   isLoadingFilter: boolean = false;
   isEnd: boolean = false;
+  organization: Organization;
 
   constructor(
     private decisionTreeService: DecisionTreeService,
-    private stepService: StepsService
+    private stepService: StepsService,
+    private initService: InitService
   ) {
     this.getDecisionTree(this.filterLevel);
+    this.getOrganization();
+  }
+
+  getOrganization() {
+    this.initService.getOrganization().subscribe((res: any) => {
+      this.organization = res;
+      localStorage.setItem('organization',JSON.stringify(this.organization));
+    });
+    this.initService.getLegalRep().subscribe((res: any) => {
+      localStorage.setItem('legalRep', JSON.stringify(res.value[0]));
+    });
   }
 
   getDecisionTree(filter) {

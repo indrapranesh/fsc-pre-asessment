@@ -1,5 +1,6 @@
 <div class="upload-wrapper">
     <nz-card>
+        <button nz-button nzType="primary" class="mb-1 mt-1" (click)="next()">Next</button>
         <div class="upload-content">
             <form nz-form [formGroup]="uploadForm" (ngSubmit)="upload()">
                 <nz-form-item>
@@ -29,7 +30,7 @@
                   </nz-form-item>
                   <nz-form-item>
                     <nz-form-control [nzSpan]="12" [nzOffset]="5">
-                      <button nz-button nzType="primary" [disabled]="!this.uploadForm.valid">Submit</button>
+                      <button nz-button nzType="primary" [nzLoading]="fileUploading" [disabled]="!this.uploadForm.valid">Submit</button>
                     </nz-form-control>
                   </nz-form-item>
             </form>

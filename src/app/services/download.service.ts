@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { async } from 'rxjs/internal/scheduler/async';
+import { resolve } from 'dns';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,11 @@ export class DownloadService {
 
   downloadTemplate(id, startBytes, increment) {
     this.headers = this.headers.append('Range', 'bytes=' + startBytes + '-' + (startBytes + increment - 1));
-    let url = environment.DYNAMICS_API_URL+'new_template_resources('+id+')/new_resource_file?size=full';
-    return this.http.get(url,{headers: this.headers, observe: 'response'});
+    let url = environment.DYNAMICS_API_URL+'/new_template_resources('+id+')/new_resource_file?size=full';
+    return new Promise(async(resolve) => {
+      this.http.get(url,{headers: this.headers, observe: 'response'}).subscribe((res) => {
+        resolve(res);
+      })
+    })
   }
 }

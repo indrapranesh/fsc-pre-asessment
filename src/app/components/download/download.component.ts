@@ -23,7 +23,7 @@ export class DownloadComponent implements OnInit {
     })
   }
 
-  downloadFile(data: any) {
+  async downloadFile(data: any) {
     console.log(data);
     let startBytes = 0;
     let increment = 4194304;
@@ -31,16 +31,19 @@ export class DownloadComponent implements OnInit {
     let finalContent = "";
     let fileSize = 0;
     let fileName = '';
-    // while (startBytes <= fileSize) {
-    //   this.downloadService.downloadTemplate(templateId, startBytes, increment).subscribe((res) => {
-    //     if(res.headers.get('status') === '206') {
-    //       console.log(res);
-    //       startBytes += increment;
-    //     } else {
-    //       startBytes = 4194305;
-    //     }
-    //   })
-    // }
+    while (startBytes <= fileSize) {
+      let res: any = await this.downloadService.downloadTemplate(templateId, startBytes, increment);
+      if(res.status == 206) {
+        startBytes += increment;
+        this.prepareFile(res.body);
+      } else {
+        startBytes = 4194305;
+      }
+    }
+  }
+
+  prepareFile(response) {
+    
   }
 
   next() {

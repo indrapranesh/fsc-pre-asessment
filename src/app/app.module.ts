@@ -23,6 +23,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommunicateComponent } from './components/communicate/communicate.component';
 import { LocationComponent } from './components/location/location.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { SignSubmitComponent } from './components/sign-submit/sign-submit.component';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -40,7 +41,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     DownloadComponent,
     UploadComponent,
     CommunicateComponent,
-    LocationComponent
+    LocationComponent,
+    SignSubmitComponent
   ],
   imports: [
     BrowserModule,

@@ -25,22 +25,27 @@ export class MatrixComponent implements OnInit {
     let _result = this.getFilterCodes();
     console.log(_result);
     let primaryCode = _result[1].outcomeCode;
-    matrix.map((primaryFilter) => {
-      if(primaryCode == primaryFilter.filter1) {
-        primaryFilter.Likely.map((x) => {
-          if(x.filter2 == _result[2].outcomeCode && x.filter3 == _result[3].outcomeCode) {
-            this.isLikely = true;
-            this.resultText = 'Great, You are likely eligible for remote audit'
-          }
-        });
-        primaryFilter.NotLikely.map((x) => {
-          if(x.filter2 == _result[2].outcomeCode && x.filter3 == _result[3].outcomeCode) {
-            this.isLikely = false;
-            this.resultText = 'Oops, You are not likely eligible for remote audit'
-          }
-        });
-      }
-    });
+    if(_result[3].outcomeCode == 'CRMOL') {
+      this.isLikely = true;
+      this.resultText = 'Great, You are likely eligible for remote audit'
+    } else {
+      matrix.map((primaryFilter) => {
+        if(primaryCode == primaryFilter.filter1) {
+          primaryFilter.Likely.map((x) => {
+            if(x.filter2 == _result[2].outcomeCode && x.filter3 == _result[3].outcomeCode) {
+              this.isLikely = true;
+              this.resultText = 'Great, You are likely eligible for remote audit'
+            }
+          });
+          primaryFilter.NotLikely.map((x) => {
+            if(x.filter2 == _result[2].outcomeCode && x.filter3 == _result[3].outcomeCode) {
+              this.isLikely = false;
+              this.resultText = 'Oops, You are not likely eligible for remote audit'
+            }
+          });
+        }
+      });
+    }
     console.log(this.isLikely);
   }
 

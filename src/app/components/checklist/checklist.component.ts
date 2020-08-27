@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ChecklistService } from "../../services/checklist.service";
 import { Scenario } from "../../interfaces/checklist.interface";
 import { StepsService } from 'src/app/services/steps.service';
-import { resolve } from 'dns';
-import { forkJoin } from 'rxjs';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 import { FormBuilder } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-checklist',
@@ -23,6 +21,7 @@ export class ChecklistComponent implements OnInit {
   _requirements: Array<any> = [];
   filterLevels = [];
   headers;
+  isInputLoading = false;
 
   standardsFilter1 = [];
   standardsFilter2 = [];
@@ -30,6 +29,25 @@ export class ChecklistComponent implements OnInit {
   expandSet = new Set<number>();
 
   isChecklistLoading: boolean;
+  inputLoading: boolean;
+
+  listofColumns = [
+    {
+      name: 'Requirement',
+      sortOrder: null
+    },
+    {
+      name: 'Requirement Type',
+      listOfFilter: [
+        { text: 'Informatory', value: 'Informative (non-normative)' },
+        { text: 'Obligatory', value: 'Obligatory' },
+        { text: 'Explanatory', value: 'Explanatory (e.g. NOTES etc.)' },
+        { text: 'Optional', value: 'Optional' },
+        { text: 'Not Applicable', value: 'Not Applicable' },
+      ],
+      filterFn: (type: string, standard) => standard.requirementType.index(type) !== -1
+    }
+  ]
 
   inputForm = this.formBuilder.group({
     input: []
@@ -39,7 +57,8 @@ export class ChecklistComponent implements OnInit {
     private checkListService: ChecklistService,
     private stepService: StepsService,
     private http: HttpClient,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private message: NzMessageService
   ) {
     let access_token = localStorage.getItem('ACCESS_TOKEN')
     this.headers = new HttpHeaders({
@@ -87,7 +106,9 @@ export class ChecklistComponent implements OnInit {
       console.log(this.scenarios);
       this.outcomes.map((outcome) => {
         this.scenarios.map((scenario) => {
-          if(outcome.scenarioCode == scenario.fsc_scenario_code) {
+          if(outcome.scenarioCode == 14) {
+            outcome['scenarioId'] = null;
+          } else if(outcome.scenarioCode == scenario.fsc_scenario_code) {
             outcome['scenarioId'] = scenario.fsc_coc_scenariosid;
           }
         })
@@ -152,17 +173,24 @@ export class ChecklistComponent implements OnInit {
   submitInput(requirement) {
     console.log(requirement);
     console.log(this.inputForm.value.input);
+    this.inputLoading = true;
     let payload  = {
       'new_fsc_requirment_type_per_coc_scenario@odata.bind': '/fsc_requirment_type_per_coc_scenario_stds('+requirement.fsc_requirment_type_per_coc_scenario_stdid + ')',
       'new_coc_input': this.inputForm.value.input,
       "new_fsc_organization@odata.bind": "accounts(58cf986f-fccc-ea11-a815-000d3a0a82c9)"
     }
     this.checkListService.createOrgRequirement(payload).subscribe((res)=> {
+      this.inputLoading = true;
       this._requirements.map((req) => {
         if(req._fsc_std_element_id_value == requirement._fsc_std_element_id_value) {
           req['cocInput'] = this.inputForm.value.input;
         }
         localStorage.setItem('requirements', JSON.stringify(this._requirements));
+        this.inputLoading =false;
+      });
+      this.inputLoading = false;
+      this.message.success('Input Added', {
+        nzDuration: 3000
       });
     });
   }

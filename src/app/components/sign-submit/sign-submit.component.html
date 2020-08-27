@@ -1,0 +1,18 @@
+<div class="submit-wrapper pt-5">
+    <nz-card>
+        <div *ngIf="!signingComplete">
+            <nz-alert  nzType="info"  nzDescription="Sign the Declaration of Authenticity and complete the Pre Assessment">
+            </nz-alert>
+            <div class="filter-header pt-2">Declaration of Authenticity</div>
+            <button *ngIf="!signingComplete" nz-button nzType="primary" class="mb-1 mt-1" (click)="openSign()">Sign here </button>
+        </div>
+        <div *ngIf="signingComplete">
+            <nz-alert  nzType="info"  nzDescription="Pre Assessment Procedure has been complete.">
+            </nz-alert>
+            <nz-result nzStatus="success" [nzTitle]="resultText">
+                <div nz-result-extra>
+                </div>
+            </nz-result>
+        </div>
+    </nz-card>
+</div>

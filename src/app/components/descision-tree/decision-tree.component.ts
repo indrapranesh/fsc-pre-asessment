@@ -4,6 +4,7 @@ import { CurrentDecision, FilterResponse, CurrentOption} from '../../interfaces/
 import { Option } from 'src/app/interfaces/decision.interface';
 import { StepsService } from '../../services/steps.service';
 import { InitService } from '../../services/init.service';
+import { DynamicsAuthService } from '../../services/dynamics-auth.service';
 import { Organization} from '../../interfaces/organization.interface';
 
 @Component({
@@ -31,10 +32,9 @@ export class DecisionTreeComponent implements OnInit {
   constructor(
     private decisionTreeService: DecisionTreeService,
     private stepService: StepsService,
-    private initService: InitService
+    private initService: InitService,
+    private authService: DynamicsAuthService
   ) {
-    this.getDecisionTree(this.filterLevel);
-    this.getOrganization();
   }
 
   getOrganization() {
@@ -229,7 +229,9 @@ export class DecisionTreeComponent implements OnInit {
     this.decisionTreeService.questionMap.clear();
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    this.getDecisionTree(this.filterLevel);
+    this.getOrganization();
   }
 
 }

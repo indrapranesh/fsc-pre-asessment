@@ -1,6 +1,8 @@
-<div class="upload-wrapper">
+<div class="upload-wrapper pt-5">
     <nz-card>
-        <button nz-button nzType="primary" class="mb-1 mt-1" (click)="next()">Next</button>
+        <div class="d-flex justify-end pb-1">
+            <button nz-button nzType="primary" (click)="next()">Next</button>
+          </div>
         <div class="upload-content">
             <form nz-form [formGroup]="uploadForm" (ngSubmit)="upload()">
                 <nz-form-item>
@@ -34,6 +36,14 @@
                     </nz-form-control>
                   </nz-form-item>
             </form>
+        </div>
+        <div>
+            Uploaded Documents:
+            <ul>
+                <ng-container *ngFor="let requirement of requirements">
+                    <li *ngIf="requirement.fileName">{{requirement?.fileName}}</li>
+                </ng-container>
+            </ul>
         </div>
     </nz-card>
 </div>

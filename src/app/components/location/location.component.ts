@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { loadModules } from 'esri-loader';
 import { FormBuilder, Validators } from '@angular/forms';
 import { LocationService } from '../../services/location.service';
+import { StepsService } from 'src/app/services/steps.service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-location',
@@ -12,42 +14,58 @@ export class LocationComponent implements OnInit, OnDestroy {
 
   @ViewChild("mapViewNode", { static: true }) private mapViewEl: ElementRef;
   view: any;
+  mapProperties = {
+    basemap: "streets-navigation-vector"
+  };
+  address = '';
+  sites = [];
 
-  selectedLatitude: number;
-  selectedLongitude: number;
+  map;
+  graphicsLayer;
+  isLoading: boolean = false;
+  locationFound: boolean = false;
+  locationAdded: boolean = false;
+  isLocationAdding: boolean = false;
+
+  selectedLatitude= 0;
+  selectedLongitude= 0;
 
   addressForm = this.formBuilder.group({
     addressLine1: ['',[Validators.required]],
     addressLine2: ['',[]],
     city: ['',[Validators.required]],
     state: ['',[Validators.required]],
-    zipcode: ['',[Validators.required]],
-    country: ['',[Validators.required]],
-    latitude: ['',[Validators.required]],
-    longitude: ['',[Validators.required]]
+    zipcode: ['',[Validators.required, Validators.pattern('^[0-9]*$')]],
+    country: ['',[Validators.required]]
   })
 
   constructor(private formBuilder: FormBuilder,
-    private locationService: LocationService) {}
+    private locationService: LocationService,
+    private stepService: StepsService,
+    private message: NzMessageService) {
+      if(localStorage.getItem('sites')) {
+        this.locationAdded = true;
+      }
+    }
 
   async initializeMap() {
     try {
       // Load the modules for the ArcGIS API for JavaScript
-      const [Map, MapView, Search] = await loadModules(["esri/Map", "esri/views/MapView", "esri/widgets/Search"]);
+      const [Map, MapView, Search, Graphic, GraphicsLayer] = await loadModules(["esri/Map", "esri/views/MapView", "esri/widgets/Search","esri/Graphic", "esri/layers/GraphicsLayer"]);
 
       // Configure the Map
       const mapProperties = {
         basemap: "streets-navigation-vector"
       };
 
-      const map = new Map(mapProperties);
+      this.map = new Map(mapProperties);
 
       // Initialize the MapView
       const mapViewProperties = {
         container: this.mapViewEl.nativeElement,
         center: [10.4515, 51.1657],
-        zoom: 7,
-        map: map
+        zoom: 5,
+        map: this.map
       };
 
       this.view = new MapView(mapViewProperties);
@@ -66,9 +84,6 @@ export class LocationComponent implements OnInit, OnDestroy {
           geocoder.locationToAddress(params)
             .then((response) => { // Show the address found
               var address = response.address;
-              this.locationService.getReverseGeoCoding(evt.mapPoint.latitude,evt.mapPoint.longitude).subscribe((res: any) => {
-                console.log(res);
-              })
               this.showPopup(address, evt.mapPoint);
             }, function(err) { // Show no address found
               this.showPopup("No address found.", evt.mapPoint);
@@ -92,8 +107,86 @@ export class LocationComponent implements OnInit, OnDestroy {
     console.log(address, pt.latitude, pt.longitude);
   }
 
-  submit() {
+  async findLocation() {
+    this.isLoading = true;
+    const [Map, MapView, Graphic, GraphicsLayer] = await loadModules(["esri/Map",
+    "esri/views/MapView",
+    "esri/Graphic",
+    "esri/layers/GraphicsLayer"]);
+    this.address = this.addressForm.value.addressLine1+ ' ' + this.addressForm.value.addressLine2+ ' ' + this.addressForm.value.city+ ' ' +
+                 this.addressForm.value.state+ ' ' + this.addressForm.value.country+ ' ' + this.addressForm.value.zipcode;
+    console.log(this.address);
+    this.locationService.getGeocoding(this.address).subscribe((res: any) => {
+      if(res.candidates [0]) {
+        this.selectedLongitude = res.candidates[0].location.x;
+        this.selectedLatitude = res.candidates[0].location.y;
+        this.graphicsLayer = new GraphicsLayer();
+        this.locationFound = true;
+        var point = {
+          type: "point",
+          longitude: this.selectedLongitude,
+          latitude: this.selectedLatitude
+        };
+        let simpleMarkerSymbol = {
+          type: "simple-marker",
+          color: [255, 0, 4],  //red
+          outline: {
+            color: [255, 0, 4],  //red
+            width: 1
+          }
+        };
+        let pointGraphic = new Graphic({
+          geometry: point,
+          symbol: simpleMarkerSymbol
+        });
+        this.graphicsLayer.add(pointGraphic);
+        this.map.add(this.graphicsLayer);
+        this.view.goTo({
+          center: [this.selectedLongitude, this.selectedLatitude],
+          zoom: 10
+        });
+        this.isLoading = false;
+      }
+    })
+  }
 
+  addLocation() {
+    this.isLocationAdding = true;
+    let org= JSON.parse(localStorage.getItem('organization'));
+    if(org.accountid) {
+      let payload = {
+        'fsc_address': this.address,
+        'fsc_CoCCompany@odata.bind': '/accounts('+org.accountid+')',
+        'fsc_latitude': this.selectedLatitude,
+        'fsc_longitude': this.selectedLongitude,
+        'statecode': 1
+      }
+      this.locationService.createSiteLocation(payload).subscribe((res) => {
+        this.isLocationAdding = false;
+        this.locationAdded = true;
+        this.locationFound = false;
+        this.addressForm.reset();
+        this.message.success('Site Location Added', {
+          nzDuration: 3000
+        });
+        if(localStorage.getItem('sites')) {
+          this.sites = JSON.parse(localStorage.getItem('sites'));
+          this.sites.push({latitude: this.selectedLatitude, longitude: this.selectedLongitude})
+          localStorage.setItem('sites',JSON.stringify(this.sites));
+        } else {
+          let site = [{
+            latitude: this.selectedLatitude,
+            longitude: this.selectedLongitude
+          }]
+          localStorage.setItem('sites',JSON.stringify(site));
+        }
+      })
+    }
+  }
+
+  next() {
+    this.stepService.currentStep.next(8);
+    localStorage.setItem('currentStep', '8');
   }
 
   ngOnInit() {

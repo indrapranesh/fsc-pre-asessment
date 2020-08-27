@@ -1,7 +1,12 @@
-<div class="location-wrapper">
+<div class="location-wrapper pt-5">
     <nz-card>
-        <div class="form-wrapper">
-            <form nz-form [nzLayout]="'inline'" [formGroup]="addressForm" (ngSubmit)="submit()">
+        <div class="step-header pb-2 d-flex align-center">
+          Add location of your Premises
+          <i class="pl-1" nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip nzTooltipTitle="Enter address to find Coordinates"></i>
+        </div>
+        <div class="form-wrapper pb-2">
+            <div>
+              <form nz-form [nzLayout]="'inline'" [formGroup]="addressForm">
                 <nz-form-item>
                   <nz-form-control nzErrorTip="Enter Address!">
                     <nz-input-group>
@@ -43,13 +48,12 @@
                         <input formControlName="country" nz-input placeholder="Country" />
                         </nz-input-group>
                     </nz-form-control>
-                    </nz-form-item>
-                <nz-form-item>
-                  <nz-form-control>
-                    <button nz-button nzType="primary" [disabled]="!addressForm.valid">Finish</button>
-                  </nz-form-control>
                 </nz-form-item>
               </form>
+              <button nz-button [nzLoading]="isLoading" nzType="primary" [disabled]="!addressForm.valid" (click)="findLocation()">Find</button>
+              <button nz-button [nzLoading]="isLocationAdding" class="ml-1" nzType="primary" [disabled]="!locationFound" (click)="addLocation()">Add Location</button>
+              <button nz-button class="next-button" nzType="primary" [disabled]="!locationAdded" (click)="next()">Next</button>
+            </div>
         </div>
         <div class="map-wrapper">
             <div #mapViewNode id="mapViewNode"></div>

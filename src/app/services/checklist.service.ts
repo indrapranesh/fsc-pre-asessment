@@ -22,10 +22,16 @@ export class ChecklistService {
 
   getRequirementPerScenario(outcomes: Array<any>) {
     let outcomeIds = [];
+    let url;
     outcomes.map((outcome) => {
-      outcomeIds.push(outcome.scenarioId);
+      if(outcome.scenarioId == null) {
+        url = environment.DYNAMICS_API_URL + '/fsc_requirment_type_per_coc_scenario_stds?$select=_fsc_scenario_code_value,_fsc_std_element_id_value,_fsc_requirement_code_value&$filter=(_fsc_scenario_code_value eq %27' + outcomeIds[0] + '%27' + ' or _fsc_scenario_code_value eq %27' + outcomeIds[1] + '%27)'+ ' and _fsc_requirement_code_value ne null';
+      } else {
+        outcomeIds.push(outcome.scenarioId);
+        url = environment.DYNAMICS_API_URL + '/fsc_requirment_type_per_coc_scenario_stds?$select=_fsc_scenario_code_value,_fsc_std_element_id_value,_fsc_requirement_code_value&$filter=(_fsc_scenario_code_value eq %27' + outcomeIds[0] + '%27' + ' or _fsc_scenario_code_value eq %27' + outcomeIds[1] + '%27'+ ' or _fsc_scenario_code_value eq %27' + outcomeIds[2] + '%27)' + ' and _fsc_requirement_code_value ne null';
+      }
     });
-    let url = environment.DYNAMICS_API_URL + '/fsc_requirment_type_per_coc_scenario_stds?$select=_fsc_scenario_code_value,_fsc_std_element_id_value,_fsc_requirement_code_value&$filter=(_fsc_scenario_code_value eq %27' + outcomeIds[0] + '%27' + ' or _fsc_scenario_code_value eq %27' + outcomeIds[1] + '%27'+ ' or _fsc_scenario_code_value eq %27' + outcomeIds[2] + '%27)' + ' and _fsc_requirement_code_value ne null';
+    
     return this.http.get(url ,{headers: this.headers});
   }
 

@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { DynamicsAuthService } from '../services/dynamics-auth.service'
 
@@ -16,10 +16,12 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(catchError(err => {
-      if(err.status === 401) {
-        this.authService.refresh();
+      if(localStorage.getItem('ACCESS_TOKEN')) {
+        if(err.status === 401) {
+          this.authService.refresh();
+        }
+        return throwError(new Error(err));
       }
-      return Observable.throw(err);
     }));
   }
 }

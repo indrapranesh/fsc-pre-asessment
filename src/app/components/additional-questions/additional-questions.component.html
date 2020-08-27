@@ -10,10 +10,9 @@
                     </div>
                 </div>  
             </div>
-            <nz-result *ngIf="showResult" [nzStatus]="isEnd ? 'info' : 'success'" [nzTitle]="resultText">
+            <nz-result *ngIf="showResult" [nzStatus]="'success'" [nzSubTitle]="resultSubTitle" [nzTitle]="resultText">
                 <div nz-result-extra>
-                  <button nz-button nzType="primary" *ngIf="!isEnd" [nzLoading]="isSubmitting" (click)="submitResponse()">Next</button>
-                  <button nz-button nzType="primary" *ngIf="isEnd" [nzLoading]="isSubmitting" (click)="contact()">Contact</button>
+                  <button nz-button nzType="primary" [nzLoading]="isSubmitting" (click)="submitResponse()">Next</button>
                 </div>
             </nz-result>
         </nz-card>

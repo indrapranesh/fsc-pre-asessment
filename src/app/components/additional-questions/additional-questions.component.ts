@@ -16,6 +16,7 @@ export class AdditionalQuestionsComponent implements OnInit {
   rootQuestionId: string;
   showResult: boolean = false;
   resultText: string = '';
+  resultSubTitle: string = '';
   decisions: CurrentDecision[] = [];
   orgResponse: FilterResponse[] = [];
 
@@ -138,8 +139,15 @@ export class AdditionalQuestionsComponent implements OnInit {
     } else {
       this.isEnd = false;
     }
-    this.showResult = true;
-    this.resultText = option.riskLevel;
+    if(option.outcome) {
+      this.showResult = true;
+      this.resultText = option.riskLevel;
+      this.resultSubTitle = option.outcome;
+    } else {
+      this.showResult = true;
+      this.resultText = option.riskLevel;
+      this.resultSubTitle = option.outcome;
+    }
   };
 
 

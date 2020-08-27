@@ -13,6 +13,8 @@ export class CommunicateComponent implements OnInit {
   legalRepName = '';
   legalRepEmail = '';
   orgName = '';
+  signingComplete = false;
+  resultText = 'Great, You have signed the Data Sharing Confidentiality Agreement';
 
   constructor(
     private communicateService: CommunicateService,
@@ -20,8 +22,8 @@ export class CommunicateComponent implements OnInit {
     private stepService: StepsService
   ) { 
     this.setData();
-    if(this.router.url.endsWith('/?event=signing_complete')) {
-      console.log('signing complete');
+    if(this.router.url.endsWith('/?state=123')) {
+      this.signingComplete = true;
     }
 }
 
@@ -34,10 +36,13 @@ export class CommunicateComponent implements OnInit {
   }
 
   openSign() {
-    window.open('http://localhost:3001/datasharing?name='+this.legalRepName+'&email='+this.legalRepEmail+'&orgName='+this.orgName,'_self');
+    let date = Date.now();
+    window.open('http://localhost:5000/datasharing?orgName='+this.orgName,'_self');
   }
 
   next() {
+    let url: string = this.router.url.substring(0, this.router.url.indexOf("?"));
+    this.router.navigateByUrl(url);
     this.stepService.currentStep.next(7);
     localStorage.setItem('currentStep', '7');
   }

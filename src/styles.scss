@@ -42,6 +42,22 @@ $hoverColor: rgba(40,92,77,0.8);
     flex-direction: column;
 }
 
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+
 .cursor-pointer {
     cursor: pointer;
 }

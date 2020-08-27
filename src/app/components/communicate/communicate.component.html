@@ -1,6 +1,13 @@
-<div class="communicate-wrapper">
+<div class="communicate-wrapper pt-5">
     <nz-card>
-        <button nz-button nzType="primary" class="mb-1 mt-1" (click)="next()">Next</button>
-        <button nz-button nzType="primary" class="mb-1 mt-1" (click)="openSign()">Sign the Data Sharing Confidentiality Agreement</button>
+        <nz-alert nzType="info"  nzDescription="A data sharing agreement needs to be signed before a Certification Body can access your data.">
+        </nz-alert>
+        <div class="filter-header pt-2">Data Sharing Confidentiality Agreement</div>
+        <button *ngIf="!signingComplete" nz-button nzType="primary" class="mb-1 mt-1" (click)="openSign()">Sign here </button>
+        <nz-result *ngIf="signingComplete" nzStatus="success" [nzTitle]="resultText">
+            <div nz-result-extra>
+              <button nz-button nzType="primary" (click)="next()">Continue</button>
+            </div>
+        </nz-result>
     </nz-card>
 </div>

@@ -1,4 +1,18 @@
 .location-wrapper {
+    .step-header {
+        font-size: 24px;
+        font-weight: 500;
+    }
+    .form-wrapper {
+        nz-form-item {
+            padding-bottom: 1rem;
+            margin-bottom: 0;
+        }
+        .next-button {
+            position: absolute;
+            right: 25px;
+        }
+    }
     .map-wrapper {
         #mapViewNode {
             padding: 0;

@@ -30,9 +30,9 @@ export class LocationComponent implements OnInit, OnDestroy {
   selectedLatitude= 0;
   selectedLongitude= 0;
 
-  addressForm = this.formBuilder.group({
-    addressLine1: ['',[Validators.required]],
-    addressLine2: ['',[]],
+  siteForm = this.formBuilder.group({
+    siteName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
+    address: ['',[Validators.required]],
     city: ['',[Validators.required]],
     state: ['',[Validators.required]],
     zipcode: ['',[Validators.required, Validators.pattern('^[0-9]*$')]],
@@ -113,8 +113,8 @@ export class LocationComponent implements OnInit, OnDestroy {
     "esri/views/MapView",
     "esri/Graphic",
     "esri/layers/GraphicsLayer"]);
-    this.address = this.addressForm.value.addressLine1+ ' ' + this.addressForm.value.addressLine2+ ' ' + this.addressForm.value.city+ ' ' +
-                 this.addressForm.value.state+ ' ' + this.addressForm.value.country+ ' ' + this.addressForm.value.zipcode;
+    this.address = this.siteForm.value.address+ ' ' + this.siteForm.value.city+ ' ' +
+                 this.siteForm.value.state+ ' ' + this.siteForm.value.country;
     console.log(this.address);
     this.locationService.getGeocoding(this.address).subscribe((res: any) => {
       if(res.candidates [0]) {
@@ -155,17 +155,19 @@ export class LocationComponent implements OnInit, OnDestroy {
     let org= JSON.parse(localStorage.getItem('organization'));
     if(org.accountid) {
       let payload = {
+        'fsc_name': this.siteForm.value.siteName,
         'fsc_address': this.address,
         'fsc_CoCCompany@odata.bind': '/accounts('+org.accountid+')',
         'fsc_latitude': this.selectedLatitude,
         'fsc_longitude': this.selectedLongitude,
+        'fsc_pincode': this.siteForm.value.zipcode,
         'statecode': 1
       }
       this.locationService.createSiteLocation(payload).subscribe((res) => {
         this.isLocationAdding = false;
         this.locationAdded = true;
         this.locationFound = false;
-        this.addressForm.reset();
+        this.siteForm.reset();
         this.message.success('Site Location Added', {
           nzDuration: 3000
         });

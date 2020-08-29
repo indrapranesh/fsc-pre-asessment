@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommunicateService } from '../../services/communicate.service';
 import { Router } from '@angular/router';
 import { StepsService } from 'src/app/services/steps.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-communicate',
@@ -37,7 +38,7 @@ export class CommunicateComponent implements OnInit {
 
   openSign() {
     let date = Date.now();
-    window.open('http://localhost:5000/datasharing?orgName='+this.orgName,'_self');
+    window.open(environment.BACKEND_URL+'/datasharing?orgName='+this.orgName,'_self');
   }
 
   next() {

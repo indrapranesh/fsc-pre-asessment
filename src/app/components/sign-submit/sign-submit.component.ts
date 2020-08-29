@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-sign-submit',
@@ -32,7 +33,7 @@ export class SignSubmitComponent implements OnInit {
 
   openSign() {
     let date = Date.now();
-    window.open('http://localhost:5000/declaration?orgName='+this.orgName+'&date='+date,'_self');
+    window.open(environment.BACKEND_URL+ '/declaration?orgName='+this.orgName+'&date='+date,'_self');
   }
 
   finish() {

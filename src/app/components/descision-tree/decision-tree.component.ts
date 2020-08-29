@@ -230,6 +230,7 @@ export class DecisionTreeComponent implements OnInit {
   }
 
   async ngOnInit() {
+    await this.authService.authenticate();
     this.getDecisionTree(this.filterLevel);
     this.getOrganization();
   }

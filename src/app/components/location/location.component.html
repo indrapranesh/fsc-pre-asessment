@@ -6,19 +6,19 @@
         </div>
         <div class="form-wrapper pb-2">
             <div>
-              <form nz-form [nzLayout]="'inline'" [formGroup]="addressForm">
+              <form nz-form [nzLayout]="'inline'" [formGroup]="siteForm">
                 <nz-form-item>
-                  <nz-form-control nzErrorTip="Enter Address!">
+                  <nz-form-control nzErrorTip="Enter Site Name!">
                     <nz-input-group>
-                      <input formControlName="addressLine1" nz-input placeholder="Address Line 1" />
+                      <input formControlName="siteName" nz-input placeholder="Site Name" />
                     </nz-input-group>
                   </nz-form-control>
                 </nz-form-item>
                 <nz-form-item>
-                  <nz-form-control >
+                  <nz-form-control nzErrorTip="Enter Address!">
                     <nz-input-group>
-                        <input formControlName="addressLine2" nz-input placeholder="Address Line 2" />
-                      </nz-input-group>
+                      <input formControlName="address" nz-input placeholder="Address" />
+                    </nz-input-group>
                   </nz-form-control>
                 </nz-form-item>
                 <nz-form-item>
@@ -50,7 +50,7 @@
                     </nz-form-control>
                 </nz-form-item>
               </form>
-              <button nz-button [nzLoading]="isLoading" nzType="primary" [disabled]="!addressForm.valid" (click)="findLocation()">Find</button>
+              <button nz-button [nzLoading]="isLoading" nzType="primary" [disabled]="!siteForm.valid" (click)="findLocation()">Find</button>
               <button nz-button [nzLoading]="isLocationAdding" class="ml-1" nzType="primary" [disabled]="!locationFound" (click)="addLocation()">Add Location</button>
               <button nz-button class="next-button" nzType="primary" [disabled]="!locationAdded" (click)="next()">Next</button>
             </div>

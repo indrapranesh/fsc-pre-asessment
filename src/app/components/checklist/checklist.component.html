@@ -1,5 +1,13 @@
 <div class="checklist-wrapper">
     <div class="container pt-5">
+      <div class="d-flex">
+        <nz-select nzShowSearch nzPlaceHolder="Select a language" [(ngModel)]="selectedLanguage">
+          <ng-container *ngFor="let language of languages">
+            <nz-option [nzLabel]="language.language" [nzValue]="language.code"></nz-option>
+          </ng-container>
+        </nz-select>
+        <button class="ml-1" [disabled]="selectedLanguage == ''" nz-button nzType="primary" (click)="translateRequirements(selectedLanguage)">Translate</button>
+      </div>
       <div class="d-flex justify-end">
         <button nz-button nzType="primary" (click)="next()">Next</button>
       </div>

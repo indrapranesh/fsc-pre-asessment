@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ChecklistService } from "../../services/checklist.service";
 import { Scenario } from "../../interfaces/checklist.interface";
 import { StepsService } from 'src/app/services/steps.service';
+import { TranslateService, GoogleObj } from 'src/app/services/translate.service';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { forkJoin } from 'rxjs';
+import { languages } from '../../constants/languages';
 
 @Component({
   selector: 'app-checklist',
@@ -19,13 +22,14 @@ export class ChecklistComponent implements OnInit {
   requirementTypes = [];
   standards = [];
   _requirements: Array<any> = [];
+  requirements: Array<any> = [];
   filterLevels = [];
   headers;
   isInputLoading = false;
+  selectedLanguage = 'en';
+  languages = [];
 
-  standardsFilter1 = [];
-  standardsFilter2 = [];
-  standardsFilter3 = [];
+
   expandSet = new Set<number>();
 
   isChecklistLoading: boolean;
@@ -58,7 +62,8 @@ export class ChecklistComponent implements OnInit {
     private stepService: StepsService,
     private http: HttpClient,
     private formBuilder: FormBuilder,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private translate: TranslateService
   ) {
     let access_token = localStorage.getItem('ACCESS_TOKEN')
     this.headers = new HttpHeaders({
@@ -70,6 +75,7 @@ export class ChecklistComponent implements OnInit {
     } else {
       this.loadData();
     }
+    this.languages = languages;
   }
 
   getResultArray() {
@@ -157,6 +163,8 @@ export class ChecklistComponent implements OnInit {
       });
     });
     localStorage.setItem('requirements', JSON.stringify(this._requirements));
+    this.requirements = this._requirements;
+    console.log(this._requirements);
     this.isChecklistLoading = false;
   }
 
@@ -192,6 +200,26 @@ export class ChecklistComponent implements OnInit {
       this.message.success('Input Added', {
         nzDuration: 3000
       });
+    });
+  }
+
+  async translateRequirements(code) {
+    let url = 'https://translation.googleapis.com/language/translate/v2?key=';
+    let key = 'AIzaSyAb8GQQOzmlSo_FM5Ziwps7bQJ7eaIA-KM';
+    let contents = [];
+    this._requirements.map((requirement) => {
+      let payload: GoogleObj = {
+        q: requirement.standardContent,
+        target: code
+      }
+      contents.push(this.http.post(url+key,payload));
+    });
+    forkJoin(contents).subscribe((results: Array<any>) => {
+      this._requirements.map((requirement,index) => {
+        console.log(results);
+        requirement.standardContent = results[index].data.translations[0].translatedText;
+      });
+      localStorage.setItem('requirements', JSON.stringify(this._requirements));
     });
   }
 

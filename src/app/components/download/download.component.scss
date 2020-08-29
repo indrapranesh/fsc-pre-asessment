@@ -1,0 +1,11 @@
+.download-wrapper {
+    .card-content-wrapper {
+        position: relative;
+        .spinner {
+            position: absolute;
+            z-index: 3;
+            top: 50%;
+            left: 50%;
+        }
+    }
+}

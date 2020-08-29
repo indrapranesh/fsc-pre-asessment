@@ -1,9 +1,11 @@
 <div class="download-wrapper pt-5">
     <nz-card>
+
       <div class="d-flex justify-end pb-1">
         <button nz-button nzType="primary" (click)="next()">Next</button>
       </div>
         <div class="card-content-wrapper">
+          <nz-spin class="spinner" *ngIf="isDownloading" nzSimple></nz-spin>
             <nz-table #basicTable>
                 <thead>
                   <tr>

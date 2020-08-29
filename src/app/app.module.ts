@@ -24,6 +24,7 @@ import { CommunicateComponent } from './components/communicate/communicate.compo
 import { LocationComponent } from './components/location/location.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { SignSubmitComponent } from './components/sign-submit/sign-submit.component';
+import { FileSaverModule } from 'ngx-filesaver';
 
 const antDesignIcons = AllIcons as {
   [key: string]: IconDefinition;
@@ -52,7 +53,8 @@ const icons: IconDefinition[] = Object.keys(antDesignIcons).map(key => antDesign
     AntdesignModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FileSaverModule
   ],
   providers: [
     DynamicsAuthService,

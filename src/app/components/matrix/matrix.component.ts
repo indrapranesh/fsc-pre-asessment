@@ -28,6 +28,9 @@ export class MatrixComponent implements OnInit {
     if(_result[3].outcomeCode == 'CRMOL') {
       this.isLikely = true;
       this.resultText = 'Great, You are likely eligible for remote audit'
+    } else if(_result[3].outcomeCode == 'NO') {
+      this.isLikely = false;
+      this.resultText = 'Oops, You are not likely eligible for remote audit'
     } else {
       matrix.map((primaryFilter) => {
         if(primaryCode == primaryFilter.filter1) {

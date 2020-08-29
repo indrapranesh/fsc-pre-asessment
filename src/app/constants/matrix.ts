@@ -103,5 +103,9 @@ export const FilterOutcome = [
     {
         outcome: 'All scenarios w/t traders',
         code: 'CRMOL'
+    },
+    {
+        outcome: 'No possibility for remote audit. Please contact certification body in your area. [no requirements shall be retrieved from req. schema]',
+        code: 'NO'
     }
 ]

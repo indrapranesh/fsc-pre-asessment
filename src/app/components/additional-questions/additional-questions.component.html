@@ -2,6 +2,8 @@
     <div class="card-wrapper">
         <nz-card class="spinner-body">
             <nz-skeleton *ngIf="isLoadingFilter" [nzActive]="true"></nz-skeleton>
+            <nz-alert class="pb-3" nzType="info"  nzDescription="Answer these additional questions to find out the risk factor.">
+            </nz-alert>
             <div class="pb-5" *ngFor="let decision of decisions; let i = index">
                 {{decision.questionText}}
                 <div class="d-flex pt-2 flex-column">

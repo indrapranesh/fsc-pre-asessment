@@ -16,7 +16,7 @@ export class UploadService {
   content;
 
 
-  orgId = '58cf986f-fccc-ea11-a815-000d3a0a82c9';
+  orgId = '';
   orgRequirementId;
   fileName;
 
@@ -25,7 +25,9 @@ export class UploadService {
 
   constructor(
     private http: HttpClient
-  ) { 
+  ) {
+    let org= JSON.parse(localStorage.getItem('organization'));
+    this.orgId = org.accountid; 
     let access_token = localStorage.getItem('ACCESS_TOKEN')
     this.headers = new HttpHeaders({
         'Authorization': `Bearer ${access_token}`,

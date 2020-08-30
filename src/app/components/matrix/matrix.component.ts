@@ -9,6 +9,7 @@ import { StepsService } from 'src/app/services/steps.service';
 })
 export class MatrixComponent implements OnInit {
 
+  outcomes = [];
   results;
   isLikely: boolean;
   resultText: string;
@@ -58,7 +59,7 @@ export class MatrixComponent implements OnInit {
     let result = JSON.parse(localStorage.getItem('result')); 
     FilterOutcome.map((filter) => {
       if(result[1].outcome == filter.outcome) {
-        result[1].outcomeCode = filter.code
+        result[1].outcomeCode = filter.code;
       };
       if(result[2].outcome == filter.outcome) {
         result[2].outcomeCode = filter.code
@@ -67,6 +68,7 @@ export class MatrixComponent implements OnInit {
         result[3].outcomeCode = filter.code
       };
     });
+    this.outcomes = [result[1].outcome, result[2].outcome, result[3].outcome ];
     return result;
   }
 

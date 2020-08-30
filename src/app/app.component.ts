@@ -9,12 +9,17 @@ import { DecisionTreeService } from './services/decision-tree.service';
 })
 export class AppComponent {
   title = 'fsc-pre-asessment';
+  showLoader = false;
 
   constructor(private authService: DynamicsAuthService) {
     this.getToken();
   }
 
   async getToken() {
-    await this.authService.authenticate();
+    if(!localStorage.getItem('ACCESS_TOKEN')) {
+      this.showLoader = true;
+      await this.authService.authenticate();
+      this.showLoader = false;
+    }
   }
 }

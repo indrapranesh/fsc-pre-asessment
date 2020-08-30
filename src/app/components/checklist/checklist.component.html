@@ -1,5 +1,7 @@
 <div class="checklist-wrapper">
     <div class="container pt-5">
+      <nz-alert class="pb-3" nzType="info"  nzDescription="Based on your scenario, these are the requirements to get certified, Add your inputs in the input column.">
+      </nz-alert>
       <div class="d-flex">
         <nz-select nzShowSearch nzPlaceHolder="Select a language" [(ngModel)]="selectedLanguage">
           <ng-container *ngFor="let language of languages">

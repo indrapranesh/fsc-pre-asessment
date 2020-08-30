@@ -37,16 +37,6 @@ export class DecisionTreeComponent implements OnInit {
   ) {
   }
 
-  getOrganization() {
-    this.initService.getOrganization().subscribe((res: any) => {
-      this.organization = res;
-      localStorage.setItem('organization',JSON.stringify(this.organization));
-    });
-    this.initService.getLegalRep().subscribe((res: any) => {
-      localStorage.setItem('legalRep', JSON.stringify(res.value[0]));
-    });
-  }
-
   getDecisionTree(filter) {
     this.isLoadingFilter = true;
     this.decisionTreeService.getQuestions(filter).subscribe((res: any) => {
@@ -230,9 +220,7 @@ export class DecisionTreeComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.authService.authenticate();
     this.getDecisionTree(this.filterLevel);
-    this.getOrganization();
   }
 
 }

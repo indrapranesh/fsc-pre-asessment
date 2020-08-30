@@ -1,5 +1,17 @@
 <div class="matrix-wrapper pt-5">
     <nz-card>
+        <div class="d-flex flex-column align-center">
+            <div class="step-header">
+                Scenarios
+            </div>  
+            <div  class="pt-5">
+                <nz-timeline>
+                    <ng-container *ngFor="let outcome of outcomes">
+                        <nz-timeline-item>{{outcome}}</nz-timeline-item>
+                    </ng-container> 
+                  </nz-timeline>
+            </div>
+        </div>
         <nz-result [nzStatus]="isLikely ? 'success' : 'info'" [nzTitle]="resultText">
             <div nz-result-extra>
               <button nz-button nzType="primary" (click)="next()">Continue</button>

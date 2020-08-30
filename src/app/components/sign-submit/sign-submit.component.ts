@@ -9,8 +9,6 @@ import { environment } from '../../../environments/environment';
 })
 export class SignSubmitComponent implements OnInit {
 
-  legalRepName = '';
-  legalRepEmail = '';
   orgName = '';
 
   signingComplete = false;
@@ -24,9 +22,6 @@ export class SignSubmitComponent implements OnInit {
   }
 
   setData() {
-    let representative = JSON.parse(localStorage.getItem('legalRep'));
-    this.legalRepName = representative.fullname;
-    this.legalRepEmail = representative.emailaddress1;
     let org = JSON.parse(localStorage.getItem('organization'));
     this.orgName = org.name;
   }

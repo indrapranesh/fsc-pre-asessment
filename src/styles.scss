@@ -1,10 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~ng-zorro-antd/ng-zorro-antd.min.css";
-
-//variables
-$primaryColor: #2e6745;
-$whiteColor: #fff;
-$hoverColor: rgba(40,92,77,0.8);
+@import 'app/styles/variables';
 
 //override ng-zoro
 .ant-btn-primary {

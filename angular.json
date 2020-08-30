@@ -18,11 +18,11 @@
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "customWebpackConfig": {
-                "path": "./extra-webpack.config.js",
-                "mergeStrategies": {
-                  "module.rules": "append"
-                },
-                "replaceDuplicatePlugins": true
+              "path": "./extra-webpack.config.js",
+              "mergeStrategies": {
+                "module.rules": "append"
+              },
+              "replaceDuplicatePlugins": true
             },
             "outputPath": "dist/fsc-pre-asessment",
             "index": "src/index.html",
@@ -41,8 +41,7 @@
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.js",
-              "./node_modules/bootstrap/dist/js/bootstrap.js",
-              "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
+              "./node_modules/bootstrap/dist/js/bootstrap.js"
             ]
           },
           "configurations": {
@@ -134,8 +133,13 @@
               "devServerTarget": "fsc-pre-asessment:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "fsc-pre-asessment"
 }

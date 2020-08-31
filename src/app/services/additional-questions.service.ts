@@ -51,4 +51,9 @@ export class AdditionalQuestionsService {
     });
     console.log(this.optionsMap)
   }
+
+
+  addOrganizationAnswer(payload) {
+    return this.http.post(environment.DYNAMICS_API_URL + '/new_org_additional_answers', payload, {headers: this.headers});
+  }
 }

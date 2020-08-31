@@ -28,6 +28,7 @@ export class DecisionTreeComponent implements OnInit {
   isLoadingFilter: boolean = false;
   isEnd: boolean = false;
   organization: Organization;
+  orgId;
 
   constructor(
     private decisionTreeService: DecisionTreeService,
@@ -35,6 +36,8 @@ export class DecisionTreeComponent implements OnInit {
     private initService: InitService,
     private authService: DynamicsAuthService
   ) {
+    let org = JSON.parse(localStorage.getItem('organization'));
+    this.orgId = org.accountid;
   }
 
   getDecisionTree(filter) {
@@ -161,25 +164,24 @@ export class DecisionTreeComponent implements OnInit {
   
   submitResponse() {
     this.isSubmitting = true;
-    this.nextFilter();
     /* submitting Organization Response to Dynamics */
-    // let payloads = this.getOrgResponsePayload();
-    // console.log(payloads);
-    // payloads.forEach((payload, index) => {
-    //   this.decisionTreeService.createOrganizationResponse(payload).subscribe(
-    //     (res) => {
-    //       console.log(res);
-    //       if((index+1) == payloads.length) {
-    //         this.isSubmitting = false;
-    //         console.log('successfully udpated');
-    //         this.nextFilter();
-    //       }
-    //     },
-    //     (err) => {
-    //       console.log(err);
-    //     }
-    //   );
-    // });
+    let payloads = this.getOrgResponsePayload();
+    console.log(payloads);
+    payloads.forEach((payload, index) => {
+      this.decisionTreeService.createOrganizationResponse(payload).subscribe(
+        (res) => {
+          console.log(res);
+          if((index+1) == payloads.length) {
+            this.isSubmitting = false;
+            console.log('successfully udpated');
+            this.nextFilter();
+          }
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    });
   }
 
   getOrgResponsePayload() {
@@ -190,7 +192,7 @@ export class DecisionTreeComponent implements OnInit {
         "new_org_answer": res.option,
         "new_fsc_question@odata.bind": questionId,
         "new_org_outcome": res.outcome,
-        "new_fsc_organization@odata.bind": "accounts(58cf986f-fccc-ea11-a815-000d3a0a82c9)"
+        "new_fsc_organization@odata.bind": `accounts(${this.orgId})`
       });
     });
     return payload;

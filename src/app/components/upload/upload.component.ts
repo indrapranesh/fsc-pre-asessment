@@ -52,6 +52,10 @@ export class UploadComponent implements OnInit {
     reader.readAsArrayBuffer(file);
   }
 
+  resetForm() {
+    this.uploadForm.reset();
+  }
+
   upload() {
     this.uploadService.fileUploading.next(true);
     console.log(this.uploadForm.value);

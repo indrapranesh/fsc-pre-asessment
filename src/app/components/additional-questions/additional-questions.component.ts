@@ -19,6 +19,7 @@ export class AdditionalQuestionsComponent implements OnInit {
   resultSubTitle: string = '';
   decisions: CurrentDecision[] = [];
   orgResponse: FilterResponse[] = [];
+  orgId;
 
   isSubmitting: boolean = false;
   isLoadingFilter: boolean = false;
@@ -27,7 +28,9 @@ export class AdditionalQuestionsComponent implements OnInit {
   constructor(
     private additionalService: AdditionalQuestionsService,
     private stepService: StepsService
-  ) { 
+  ) {
+    let org = JSON.parse(localStorage.getItem('organization'));
+    this.orgId = org.accountid; 
     this.getDecisionTree();
   }
 
@@ -152,6 +155,18 @@ export class AdditionalQuestionsComponent implements OnInit {
 
 
   submitResponse() {
+    console.log(this.orgResponse);
+    this.orgResponse.map((res) => {
+      let payload = {
+        'new_fsc_organization@odata.bind': `accounts(${this.orgId})`,
+        'new_question@odata.bind': `/new_fsc_additional_questions(${res.questionId})`,
+        'new_answer@odata.bind': `/new_fsc_additional_answers(${res.option})`
+      }
+      console.log(payload);
+      this.additionalService.addOrganizationAnswer(payload).subscribe((res) => {
+        console.log(res);
+      });
+    });
     this.stepService.currentStep.next(4);
     localStorage.setItem('currentStep', '4');
   }

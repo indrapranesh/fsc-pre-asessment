@@ -18,6 +18,7 @@ export class AppComponent {
   }
 
   async getToken() {
+    
     if(!localStorage.getItem('ACCESS_TOKEN')) {
       this.showLoader = true;
       await this.authService.authenticate();

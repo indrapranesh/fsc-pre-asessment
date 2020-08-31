@@ -28,6 +28,7 @@ export class ChecklistComponent implements OnInit {
   isInputLoading = false;
   selectedLanguage = 'en';
   languages = [];
+  orgId;
 
 
   expandSet = new Set<number>();
@@ -65,6 +66,8 @@ export class ChecklistComponent implements OnInit {
     private message: NzMessageService,
     private translate: TranslateService
   ) {
+    let org= JSON.parse(localStorage.getItem('organization'));
+    this.orgId = org.accountid; 
     let access_token = localStorage.getItem('ACCESS_TOKEN')
     this.headers = new HttpHeaders({
         'Authorization': `Bearer ${access_token}`
@@ -185,7 +188,7 @@ export class ChecklistComponent implements OnInit {
     let payload  = {
       'new_fsc_requirment_type_per_coc_scenario@odata.bind': '/fsc_requirment_type_per_coc_scenario_stds('+requirement.fsc_requirment_type_per_coc_scenario_stdid + ')',
       'new_coc_input': this.inputForm.value.input,
-      "new_fsc_organization@odata.bind": "accounts(58cf986f-fccc-ea11-a815-000d3a0a82c9)"
+      "new_fsc_organization@odata.bind": `accounts(${this.orgId})`
     }
     this.checkListService.createOrgRequirement(payload).subscribe((res)=> {
       this.inputLoading = true;

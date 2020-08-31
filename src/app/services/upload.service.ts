@@ -55,7 +55,7 @@ export class UploadService {
   createOrgRequirement(requirement) {
     let payload = {
       'new_fsc_requirment_type_per_coc_scenario@odata.bind': '/fsc_requirment_type_per_coc_scenario_stds('+ requirement.fsc_requirment_type_per_coc_scenario_stdid + ')',
-      'new_fsc_organization@odata.bind': 'accounts(58cf986f-fccc-ea11-a815-000d3a0a82c9)'
+      'new_fsc_organization@odata.bind': `accounts(${this.orgId})`
     }
     return this.http.post(environment.DYNAMICS_API_URL+'/new_organization_requirements',payload,{headers: this.postHeaders});
   }

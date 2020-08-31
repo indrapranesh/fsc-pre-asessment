@@ -24,15 +24,15 @@ export class CommunicateComponent implements OnInit {
   contactTypes = [
     {
       name: 'Applicant',
-      value: 860140002
-    },
-    {
-      name: 'CH Legal Representative',
       value: 860140003
     },
     {
+      name: 'CH Legal Representative',
+      value: 860140004
+    },
+    {
       name: 'Certificate Holder',
-      value: 860140005
+      value: 860140001
     }
   ]
 
@@ -52,6 +52,9 @@ export class CommunicateComponent implements OnInit {
     private fb: FormBuilder,
     private message: NzMessageService
   ) { 
+    if(localStorage.getItem('contactAdded')) {
+      this.contactAdded = true;
+    }
     this.setData();
     if(this.router.url.endsWith('/?state=123')) {
       this.signingComplete = true;
@@ -85,6 +88,7 @@ export class CommunicateComponent implements OnInit {
       this.message.success('Contact Added', {
         nzDuration: 3000
       });
+      localStorage.setItem('contactAdded', 'true');
     })
   }
 

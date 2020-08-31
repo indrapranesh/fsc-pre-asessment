@@ -14,7 +14,9 @@ export class HeaderComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.initService.getOrganization();
+    if(!localStorage.getItem('organization')) {
+      await this.initService.getOrganization();
+    }
     this.organization = JSON.parse(localStorage.getItem('organization')).name;
   }
 

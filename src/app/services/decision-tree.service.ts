@@ -54,4 +54,8 @@ export class DecisionTreeService {
     return this.http.post(environment.DYNAMICS_API_URL+'/new_organization_answers',payload, {headers: this.headers, observe: 'response'});
   }
 
+  createOrganizationScenario(payload) {
+    return this.http.post(environment.DYNAMICS_API_URL+'/new_organization_scenario',payload, {headers: this.headers});
+  }
+
 }

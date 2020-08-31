@@ -1,27 +1,31 @@
 # FscPreAsessment
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.2.
+This project is the Client application for FSC Pre Assessment developed for Docusign Good Code Hackathon 2020.
 
-## Development server
+## Features
+This application allows companies to self-assess whether they would qualify for FSC certification.
+This application uses Forest Stewardship Council data and interacts with Dynamics 365.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+This application uses a static user for Assessment.
 
-## Code scaffolding
+### 1. Pre Filtering of Applicants
+ The company needs to answer questions for three filters to find out the scenarios which apply to them
+### 2. Likelihood for Certification
+ This shows whether the company is likely or not likely eligible for remote audit
+### 3. Digital Checklist
+ The company needs to fill in the digital checklist that is generated based on their scenarios.
+### 4. Risk Analysis
+ The company needs to answer some additional questions 
+### 5. Download sample documents
+ The company can download sample documents to achieve compliance.
+### 6. Upload compliance data
+ The company should upload documents for their requirements.
+### 7. Sign Data Sharing and Confidentiality Agreement
+ The company should add a way for contact followed by signing the Data sharing agreement.
+### 8. Add Site Location on Map
+ The company should add the location of their sites on the map.
+### 9. Sign Declaration of Authenticity
+ The company should sign the Declaration of Authenticity.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Development Server
+Run `npm install` and then run `ng serve`

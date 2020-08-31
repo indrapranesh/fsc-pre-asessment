@@ -1,0 +1,22 @@
+<div class="additional-questions-wrapper pt-5">
+    <div class="card-wrapper">
+        <nz-card class="spinner-body">
+            <nz-skeleton *ngIf="isLoadingFilter" [nzActive]="true"></nz-skeleton>
+            <nz-alert class="pb-3" nzType="info"  nzDescription="Answer these additional questions to find out the risk factor.">
+            </nz-alert>
+            <div class="pb-5" *ngFor="let decision of decisions; let i = index">
+                {{decision.questionText}}
+                <div class="d-flex pt-2 flex-column">
+                    <div class="pt-1 options-wrapper" *ngFor="let option of decision.options">
+                        <div class="options-card" [class.unselected]="!option.isSelected" [class.selected]="option.isSelected" (click)="nextQuestion(decision, option, i)">{{option.optionText}}</div>
+                    </div>
+                </div>  
+            </div>
+            <nz-result *ngIf="showResult" [nzStatus]="'success'" [nzSubTitle]="resultSubTitle" [nzTitle]="resultText">
+                <div nz-result-extra>
+                  <button nz-button nzType="primary" [nzLoading]="isSubmitting" (click)="submitResponse()">Next</button>
+                </div>
+            </nz-result>
+        </nz-card>
+    </div>
+</div> 

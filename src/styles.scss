@@ -1,1 +1,63 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+@import 'app/styles/variables';
+
+//override ng-zoro
+.ant-btn-primary {
+    background-color: $primaryColor;
+    border-color: $primaryColor;
+}
+.ant-btn-primary:hover {
+    background-color: $hoverColor;
+    border-color: $primaryColor;
+}
+
+.ant-page-header-heading-left {
+    align-items: flex-end !important;
+}
+
+.ant-empty-description {
+    display: none;
+}
+
+
+
+//common
+.spinner {
+    z-index: 3;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.justify-end {
+    justify-content: flex-end;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.step-header {
+    font-size: 24px;
+    font-weight: 500;
+}

@@ -1,0 +1,78 @@
+<div class="communicate-wrapper pt-5">
+    <nz-card>
+        <ng-container *ngIf="!contactAdded">
+          <div class="form-wrapper">
+            <form nz-form [formGroup]="contactForm" (ngSubmit)="submitForm(contactForm.value)">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="7" nzRequired>First Name</nz-form-label>
+                  <nz-form-control [nzSpan]="12" nzErrorTip="Enter a valid name.">
+                    <input nz-input formControlName="firstName" placeholder="First Name" />
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzRequired>Last Name</nz-form-label>
+                    <nz-form-control [nzSpan]="12" nzErrorTip="Enter a valid name.">
+                      <input nz-input formControlName="lastName" placeholder="Last Name" />
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="7" nzRequired>E-mail</nz-form-label>
+                  <nz-form-control [nzSpan]="12" [nzErrorTip]="emailErrorTpl">
+                    <div class="d-flex align-center">
+                      <input nz-input formControlName="email" placeholder="email" type="email" />
+                      <i class="pl-1" nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip nzTooltipTitle="This email will be used for communication with the Certification Body"></i>
+                    </div>
+                    <ng-template #emailErrorTpl let-control>
+                      <ng-container *ngIf="control.hasError('email')">
+                        The input is not valid E-mail
+                      </ng-container>
+                      <ng-container *ngIf="control.hasError('required')">
+                        Please input your E-mail
+                      </ng-container>
+                    </ng-template>
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzRequired>Phone Number</nz-form-label>
+                    <nz-form-control [nzSpan]="12" nzErrorTip="Enter a valid phone number.">
+                      <input nz-input formControlName="mobile" placeholder="Phone Number" />
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label [nzSpan]="7" nzRequired>Contact Type</nz-form-label>
+                    <nz-form-control [nzSpan]="12" nzErrorTip="Please select contact type">
+                      <nz-select
+                        formControlName="contactId"
+                        nzPlaceHolder="Select type of contact"
+                      >
+                      <ng-container *ngFor="let type of contactTypes">
+                        <nz-option [nzLabel]="type.name" [nzValue]="type.value"></nz-option>
+                        </ng-container>
+                      </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-control [nzOffset]="7" [nzSpan]="12">
+                    <button nz-button nzType="primary" [nzLoading]="isContactAdding" [disabled]="!contactForm.valid">Submit</button>
+                  </nz-form-control>
+                </nz-form-item>
+              </form>
+        </div>
+        </ng-container>
+        <ng-container *ngIf="contactAdded">
+          <ng-container *ngIf="!signingComplete">
+            <nz-alert nzType="info"  nzDescription="A data sharing agreement needs to be signed before a Certification Body can access your data.">
+            </nz-alert>
+            <div class="filter-header pt-2">Data Sharing Confidentiality Agreement</div>
+            <button nz-button nzType="primary" class="mb-1 mt-1" (click)="openSign()">Sign here </button>
+          </ng-container>
+          <nz-result *ngIf="signingComplete" nzStatus="success" [nzTitle]="resultText">
+              <div nz-result-extra>
+                <nz-alert nzType="info"  nzDescription="Certification Body will contact you through the email you have given for any clarifications.">
+                </nz-alert>
+                <button class="mt-2" nz-button nzType="primary" (click)="next()">Continue</button>
+              </div>
+          </nz-result>
+        </ng-container>
+    </nz-card>
+</div>

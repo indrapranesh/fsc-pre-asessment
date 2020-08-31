@@ -1,0 +1,26 @@
+<div class="decision-tree-wrapper pt-5">
+    <div class="card-wrapper">
+        <nz-card class="spinner-body">
+            <nz-alert class="pb-3" nzType="info"  nzDescription="Answer these questions to find out the scenario that applies.">
+            </nz-alert>
+            <div class="filter-header pb-2">
+                Level {{filterLevel}}
+            </div>
+            <nz-skeleton *ngIf="isLoadingFilter" [nzActive]="true"></nz-skeleton>
+            <div class="pb-5" *ngFor="let decision of decisions; let i = index">
+                {{decision.questionText}}
+                <div class="d-flex pt-2 flex-column">
+                    <div class="pt-1 options-wrapper" *ngFor="let option of decision.options">
+                        <div class="options-card" [class.unselected]="!option.isSelected" [class.selected]="option.isSelected" (click)="nextQuestion(decision, option, i)">{{option.optionText}}</div>
+                    </div>
+                </div>  
+            </div>
+            <nz-result *ngIf="showResult" [nzStatus]="isEnd ? 'info' : 'success'" [nzTitle]="resultText">
+                <div nz-result-extra>
+                  <button nz-button nzType="primary" *ngIf="!isEnd" [nzLoading]="isSubmitting" (click)="submitResponse()">Next</button>
+                  <button nz-button nzType="primary" *ngIf="isEnd" [nzLoading]="isSubmitting" (click)="contact()">Contact</button>
+                </div>
+            </nz-result>
+        </nz-card>
+    </div>
+</div> 

@@ -1,0 +1,62 @@
+<div class="location-wrapper pt-5">
+    <nz-card>
+        <div class="step-header pb-2 d-flex align-center">
+          Add location of your Premises
+          <i class="pl-1" nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip nzTooltipTitle="Enter address to find Coordinates"></i>
+        </div>
+        <div class="form-wrapper pb-2">
+            <div>
+              <form nz-form [nzLayout]="'inline'" [formGroup]="siteForm">
+                <nz-form-item>
+                  <nz-form-control nzErrorTip="Enter Site Name!">
+                    <nz-input-group>
+                      <input formControlName="siteName" nz-input placeholder="Site Name" />
+                    </nz-input-group>
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                  <nz-form-control nzErrorTip="Enter Address!">
+                    <nz-input-group>
+                      <input formControlName="address" nz-input placeholder="Address" />
+                    </nz-input-group>
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Enter City!">
+                        <nz-input-group>
+                        <input formControlName="city" nz-input placeholder="City" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Enter State!">
+                        <nz-input-group>
+                        <input formControlName="state" nz-input placeholder="State" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Enter Postal Code!">
+                        <nz-input-group>
+                        <input formControlName="zipcode" nz-input placeholder="Postal Code" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-control nzErrorTip="Enter Country!">
+                        <nz-input-group>
+                        <input formControlName="country" nz-input placeholder="Country" />
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+              </form>
+              <button nz-button [nzLoading]="isLoading" nzType="primary" [disabled]="!siteForm.valid" (click)="findLocation()">Find</button>
+              <button nz-button [nzLoading]="isLocationAdding" class="ml-1" nzType="primary" [disabled]="!locationFound" (click)="addLocation()">Add Location</button>
+              <button nz-button class="next-button" nzType="primary" [disabled]="!locationAdded" (click)="next()">Next</button>
+            </div>
+        </div>
+        <div class="map-wrapper">
+            <div #mapViewNode id="mapViewNode"></div>
+        </div>
+    </nz-card>
+</div>

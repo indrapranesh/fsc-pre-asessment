@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "fsc-pre-assessment-c6b45": {
+      "hosting": {
+        "fsc-pre-asessment": [
+          "fsc-pre-assessment-c6b45"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "fsc-pre-assessment-c6b45"
+  }
+}

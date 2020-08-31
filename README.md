@@ -9,11 +9,11 @@ This application uses Forest Stewardship Council data and interacts with Dynamic
 This application uses a static user for Assessment.
 
 ### 1. Pre Filtering of Applicants
- The company needs to answer questions for three filters to find out the scenarios which apply to them
+ The company needs to answer questions for three filters to find out the scenarios which apply to them, The questions and Options are stored in Dynamics, The answers of the comapany is also stored in Dynamics.
 ### 2. Likelihood for Certification
- This shows whether the company is likely or not likely eligible for remote audit
+ This shows whether the company is likely or not likely eligible for remote audit. The likelihood matrix is maintained in this application.
 ### 3. Digital Checklist
- The company needs to fill in the digital checklist that is generated based on their scenarios.
+ The company needs to fill in the digital checklist that is generated based on their scenarios. 
 ### 4. Risk Analysis
  The company needs to answer some additional questions 
 ### 5. Download sample documents

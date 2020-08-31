@@ -37,7 +37,7 @@ export class DecisionTreeComponent implements OnInit {
   ) {
     if(localStorage.getItem('organization')) {
       let org = JSON.parse(localStorage.getItem('organization'));
-      this.orgId = org.name;
+      this.orgId = org.accountid;
     }
   }
 

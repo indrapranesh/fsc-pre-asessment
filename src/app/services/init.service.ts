@@ -16,11 +16,6 @@ export class InitService {
   }
 
   getOrganization() {
-    return new Promise(async(resolve) => {
-      this.http.get(environment.DYNAMICS_API_URL+ '/accounts('+this.orgId+')',{headers: this.headers}).subscribe((res) => {
-        localStorage.setItem('organization',JSON.stringify(res));
-        resolve();
-      });
-    })
+    return  this.http.get(environment.DYNAMICS_API_URL+ '/accounts('+this.orgId+')',{headers: this.headers});
   }
 }

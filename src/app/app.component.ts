@@ -11,6 +11,7 @@ import { InitService } from './services/init.service';
 export class AppComponent {
   title = 'fsc-pre-asessment';
   showLoader = false;
+  isAuthenticated = false;
 
   constructor(private authService: DynamicsAuthService,
     private initService: InitService) {
@@ -18,14 +19,17 @@ export class AppComponent {
   }
 
   async getToken() {
+
+    if(localStorage.getItem('ACCESS_TOKEN')) {
+      this.isAuthenticated = true;
+    }
     
     if(!localStorage.getItem('ACCESS_TOKEN')) {
       this.showLoader = true;
       await this.authService.authenticate();
       this.showLoader = false;
-      if(!localStorage.getItem('organization')) {
-        await this.initService.getOrganization();
-      }
+      await this.initService.getOrganization();
+      this.isAuthenticated = true;
     }
   }
 }

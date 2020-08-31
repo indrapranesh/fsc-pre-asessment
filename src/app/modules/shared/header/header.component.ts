@@ -13,11 +13,11 @@ export class HeaderComponent implements OnInit {
   constructor(private initService: InitService) { 
   }
 
-  async ngOnInit() {
-    if(!localStorage.getItem('organization')) {
-      await this.initService.getOrganization();
+  ngOnInit() {
+    if(localStorage.getItem('organization')) {
+      let org = JSON.parse(localStorage.getItem('organization'));
+      this.organization = org.name
     }
-    this.organization = JSON.parse(localStorage.getItem('organization')).name;
   }
 
 }

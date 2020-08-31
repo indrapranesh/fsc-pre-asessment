@@ -1,2 +1,2 @@
 <nz-spin class="spinner" *ngIf="showLoader" nzSimple></nz-spin>
-<router-outlet></router-outlet>
+<router-outlet *ngIf="isAuthenticated"></router-outlet>

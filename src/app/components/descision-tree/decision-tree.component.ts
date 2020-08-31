@@ -33,11 +33,12 @@ export class DecisionTreeComponent implements OnInit {
   constructor(
     private decisionTreeService: DecisionTreeService,
     private stepService: StepsService,
-    private initService: InitService,
-    private authService: DynamicsAuthService
+    private initService: InitService
   ) {
-    let org = JSON.parse(localStorage.getItem('organization'));
-    this.orgId = org.accountid;
+    if(localStorage.getItem('organization')) {
+      let org = JSON.parse(localStorage.getItem('organization'));
+      this.orgId = org.name;
+    }
   }
 
   getDecisionTree(filter) {

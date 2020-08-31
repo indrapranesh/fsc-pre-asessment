@@ -1,12 +1,13 @@
 # FscPreAsessment
 
 This project is the Client application for FSC Pre Assessment developed for Docusign Good Code Hackathon 2020.
+[Express App Link](https://github.com/indrapranesh/fsc-node-app1)
 
 ## Features
 This application allows companies to self-assess whether they would qualify for FSC certification.
-This application uses Forest Stewardship Council data and interacts with Dynamics 365.
-
+This application uses Forest Stewardship Council data and interacts with Dynamics 365. 
 This application uses a static user for Assessment.
+All the details entered by the company are stored in Dynamics.
 
 ### 1. Pre Filtering of Applicants
  The company needs to answer questions for three filters to find out the scenarios which apply to them, The questions and Options are stored in Dynamics, The answers of the comapany is also stored in Dynamics.

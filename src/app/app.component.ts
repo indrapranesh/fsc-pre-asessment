@@ -27,8 +27,8 @@ export class AppComponent {
     if(!localStorage.getItem('ACCESS_TOKEN')) {
       this.showLoader = true;
       await this.authService.authenticate();
-      this.showLoader = false;
       await this.initService.getOrganization();
+      this.showLoader = false;
       this.isAuthenticated = true;
     }
   }

@@ -2,7 +2,7 @@
 
 This project is the Client application for FSC Pre Assessment developed for Docusign Good Code Hackathon 2020.
 
-[Backend App Link](https://github.com/indrapranesh/fsc-app1-node)
+[Backend Application Repository](https://github.com/indrapranesh/fsc-app1-node)
 
 ## Features
 This application allows companies to self-assess whether they would qualify for FSC certification.
